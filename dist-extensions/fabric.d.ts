@@ -4,8 +4,8 @@ export { VERSION as version, iMatrix } from './src/constants';
 export { config } from './src/config';
 export { classRegistry } from './src/ClassRegistry';
 export { runningAnimations } from './src/util/animation/AnimationRegistry';
-export * from './src/typedefs';
-export * from './src/EventTypeDefs';
+export type * from './src/typedefs';
+export type * from './src/EventTypeDefs';
 export type { ITextEvents } from './src/shapes/IText/ITextBehavior';
 export { Observable } from './src/Observable';
 export type { TCanvasSizeOptions, TSVGExportOptions, } from './src/canvas/StaticCanvas';
@@ -20,13 +20,13 @@ export { Point } from './src/Point';
 export type { IntersectionType } from './src/Intersection';
 export { Intersection } from './src/Intersection';
 export { Color } from './src/color/Color';
-export * from './src/color/typedefs';
+export type * from './src/color/typedefs';
 export * from './src/gradient';
 export * from './src/Pattern';
 export { Shadow } from './src/Shadow';
 export type { SerializedShadowOptions } from './src/Shadow';
 export { BaseBrush } from './src/brushes/BaseBrush';
-export * from './src/brushes/typedefs';
+export type * from './src/brushes/typedefs';
 export { PencilBrush } from './src/brushes/PencilBrush';
 export { CircleBrush } from './src/brushes/CircleBrush';
 export { SprayBrush } from './src/brushes/SprayBrush';
@@ -79,7 +79,7 @@ export { FabricText,
  * import { FabricText } from 'fabric'; // migration path
  *
  */
-FabricText as Text, } from './src/shapes/Text/Text';
+FabricText as Text, getMeasuringContext, } from './src/shapes/Text/Text';
 export type { ITextProps, SerializedITextProps, CursorRenderingData, CursorBoundaries, } from './src/shapes/IText/IText';
 export { IText } from './src/shapes/IText/IText';
 export type { GraphemeData, SerializedTextboxProps, TextboxProps, } from './src/shapes/Textbox';
@@ -109,13 +109,9 @@ export * as util from './src/util';
 export { loadSVGFromString } from './src/parser/loadSVGFromString';
 export { loadSVGFromURL } from './src/parser/loadSVGFromURL';
 export { parseSVGDocument } from './src/parser/parseSVGDocument';
-export { parseAttributes } from './src/parser/parseAttributes';
-export { parseStyleAttribute } from './src/parser/parseStyleAttribute';
-export { parsePointsAttribute } from './src/parser/parsePointsAttribute';
-export { parseTransformAttribute } from './src/parser/parseTransformAttribute';
-export { getCSSRules } from './src/parser/getCSSRules';
-export { parseFontDeclaration } from './src/parser/parseFontDeclaration';
 export { Control } from './src/controls/Control';
 export * as controlsUtils from './src/controls';
 export * from './src/filters';
+export * from './src/constants';
+export * from './src/shapes/Text/constants';
 //# sourceMappingURL=fabric.d.ts.map

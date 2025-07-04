@@ -69,7 +69,10 @@ type TSyntheticEventContext = {
   drag: DragEventData;
 };
 
-export class Canvas extends SelectableCanvas implements CanvasOptions {
+export class Canvas<EventSpec extends CanvasEvents = CanvasEvents>
+  extends SelectableCanvas<EventSpec>
+  implements CanvasOptions
+{
   /**
    * Contains the id of the touch event that owns the fabric transform
    * @type Number

@@ -54,7 +54,7 @@ let measuringContext: CanvasRenderingContext2D | null;
  * Return a context for measurement of text string.
  * if created it gets stored for reuse
  */
-function getMeasuringContext() {
+export function getMeasuringContext() {
   if (!measuringContext) {
     const canvas = createCanvasElementFor({
       width: 0,

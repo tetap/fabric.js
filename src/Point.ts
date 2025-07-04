@@ -249,6 +249,10 @@ export class Point implements XY {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
+  radiansFrom(that: XY): number {
+    return Math.atan2(this.y - that.y, this.x - that.x);
+  }
+
   /**
    * Returns the point between this point and another one
    * @param {XY} that

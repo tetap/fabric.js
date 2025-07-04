@@ -115,6 +115,7 @@ export {
    *
    */
   FabricText as Text,
+  getMeasuringContext,
 } from './src/shapes/Text/Text';
 export type {
   ITextProps,
@@ -180,3 +181,5 @@ export { Control } from './src/controls/Control';
 export * as controlsUtils from './src/controls';
 
 export * from './src/filters';
+export * from './src/constants';
+export * from './src/shapes/Text/constants';

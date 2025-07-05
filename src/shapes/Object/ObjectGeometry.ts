@@ -640,7 +640,7 @@ export class ObjectGeometry<EventSpec extends ObjectEvents = ObjectEvents>
       );
     }
 
-    return finalDimensions.scalarAdd(postScalingStrokeValue);
+    return finalDimensions
   }
 
   /**

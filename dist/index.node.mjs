@@ -6608,11 +6608,9 @@ class ObjectGeometry extends CommonMethods {
     };
     // stroke is applied before/after transformations are applied according to `strokeUniform`
     const strokeWidth = dimOptions.strokeWidth;
-    let preScalingStrokeValue = strokeWidth,
-      postScalingStrokeValue = 0;
+    let preScalingStrokeValue = strokeWidth;
     if (this.strokeUniform) {
       preScalingStrokeValue = 0;
-      postScalingStrokeValue = strokeWidth;
     }
     const dimX = dimOptions.width + preScalingStrokeValue,
       dimY = dimOptions.height + preScalingStrokeValue,
@@ -6623,7 +6621,7 @@ class ObjectGeometry extends CommonMethods {
     } else {
       finalDimensions = sizeAfterTransform(dimX, dimY, calcDimensionsMatrix(dimOptions));
     }
-    return finalDimensions.scalarAdd(postScalingStrokeValue);
+    return finalDimensions;
   }
 
   /**

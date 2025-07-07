@@ -724,4 +724,12 @@ export class InteractiveFabricObject<
   renderDropTargetEffect(_e: DragEvent) {
     // for subclasses
   }
+
+  setScaleX(value: number) {
+    this.scaleX = value;
+  }
+
+  setScaleY(value: number) {
+    this.scaleY = value;
+  }
 }

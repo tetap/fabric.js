@@ -114,4 +114,8 @@ export * as controlsUtils from './src/controls';
 export * from './src/filters';
 export * from './src/constants';
 export * from './src/shapes/Text/constants';
+export * from './src/util/misc/matrix';
+export * from './src/util/transform_matrix_removal';
+export * from './src/util/applyMixins';
+export * from './src/util/misc/objectTransforms';
 //# sourceMappingURL=fabric.d.ts.map

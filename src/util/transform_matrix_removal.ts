@@ -14,7 +14,7 @@ type FabricObjectWithTransformMatrix = FabricObject & {
  * untransformed coordinates
  * @private
  */
-const _assignTransformMatrixProps = (
+export const _assignTransformMatrixProps = (
   object: FabricObjectWithTransformMatrix,
 ) => {
   if (object.transformMatrix) {

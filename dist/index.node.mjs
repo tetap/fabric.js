@@ -1758,6 +1758,7 @@ const createScaleMatrix = function (x) {
   return [x, 0, 0, y, 0, 0];
 };
 const angleToSkew = angle => Math.tan(degreesToRadians(angle));
+const skewToAngle = value => radiansToDegrees(Math.atan(value));
 
 /**
  * Generate a skew matrix for the X axis
@@ -9763,6 +9764,12 @@ class InteractiveFabricObject extends FabricObject$1 {
    */
   renderDropTargetEffect(_e) {
     // for subclasses
+  }
+  setScaleX(value) {
+    this.scaleX = value;
+  }
+  setScaleY(value) {
+    this.scaleY = value;
   }
 }
 /**
@@ -28790,5 +28797,5 @@ class Canvas extends Canvas$1 {
   }
 }
 
-export { ALIASING_LIMIT, ActiveSelection, BOTTOM, BaseBrush, FabricObject$1 as BaseFabricObject, CENTER, CHANGED, Canvas, Canvas2dFilterBackend, CanvasDOMManager, Circle, CircleBrush, ClipPathLayout, Color, Control, DEFAULT_SVG_FONT_SIZE, Ellipse, FILL, FabricImage, FabricObject, FabricText, FitContentLayout, FixedLayout, Gradient, Group, IText, FabricImage as Image, InteractiveFabricObject, Intersection, JUSTIFY, JUSTIFY_CENTER, JUSTIFY_LEFT, JUSTIFY_RIGHT, LEFT, LayoutManager, LayoutStrategy, Line, MODIFIED, MODIFY_PATH, MODIFY_POLY, MOVING, NONE, FabricObject as Object, Observable, Path, Pattern, PatternBrush, PencilBrush, PiBy180, Point, Polygon, Polyline, RESIZING, RIGHT, ROTATE, ROTATING, Rect, SCALE, SCALE_X, SCALE_Y, SCALING, SKEWING, SKEW_X, SKEW_Y, STROKE, Shadow, SprayBrush, StaticCanvas, StaticCanvasDOMManager, TEXT_DECORATION_THICKNESS, TOP, FabricText as Text, Textbox, Triangle, VERSION, WebGLFilterBackend, additionalProps, cache, classRegistry, config, index as controlsUtils, createCollectionMixin, filters, getEnv$1 as getEnv, getFabricDocument, getFabricWindow, getFilterBackend, getMeasuringContext, halfPI, iMatrix, initFilterBackend, isPutImageFaster, isWebGLPipelineState, kRect, loadSVGFromString, loadSVGFromURL, noop, parseSVGDocument, quarterPI, reNewline, runningAnimations, setEnv, setFilterBackend, styleProperties, textDecorationProperties, textDefaultValues, textLayoutProperties, twoMathPi, index$1 as util, VERSION as version };
+export { ALIASING_LIMIT, ActiveSelection, BOTTOM, BaseBrush, FabricObject$1 as BaseFabricObject, CENTER, CHANGED, Canvas, Canvas2dFilterBackend, CanvasDOMManager, Circle, CircleBrush, ClipPathLayout, Color, Control, DEFAULT_SVG_FONT_SIZE, Ellipse, FILL, FabricImage, FabricObject, FabricText, FitContentLayout, FixedLayout, Gradient, Group, IText, FabricImage as Image, InteractiveFabricObject, Intersection, JUSTIFY, JUSTIFY_CENTER, JUSTIFY_LEFT, JUSTIFY_RIGHT, LEFT, LayoutManager, LayoutStrategy, Line, MODIFIED, MODIFY_PATH, MODIFY_POLY, MOVING, NONE, FabricObject as Object, Observable, Path, Pattern, PatternBrush, PencilBrush, PiBy180, Point, Polygon, Polyline, RESIZING, RIGHT, ROTATE, ROTATING, Rect, SCALE, SCALE_X, SCALE_Y, SCALING, SKEWING, SKEW_X, SKEW_Y, STROKE, Shadow, SprayBrush, StaticCanvas, StaticCanvasDOMManager, TEXT_DECORATION_THICKNESS, TOP, FabricText as Text, Textbox, Triangle, VERSION, WebGLFilterBackend, _assignTransformMatrixProps, addTransformToObject, additionalProps, angleToSkew, applyMixins, applyTransformToObject, cache, calcDimensionsMatrix, calcPlaneRotation, classRegistry, composeMatrix, config, index as controlsUtils, createCollectionMixin, createRotateMatrix, createScaleMatrix, createSkewXMatrix, createSkewYMatrix, createTranslateMatrix, filters, getEnv$1 as getEnv, getFabricDocument, getFabricWindow, getFilterBackend, getMeasuringContext, halfPI, iMatrix, initFilterBackend, invertTransform, isIdentityMatrix, isPutImageFaster, isWebGLPipelineState, kRect, loadSVGFromString, loadSVGFromURL, multiplyTransformMatrices, multiplyTransformMatrixArray, noop, parseSVGDocument, qrDecompose, quarterPI, reNewline, removeTransformFromObject, removeTransformMatrixForSvgParsing, resetObjectTransform, runningAnimations, saveObjectTransform, setEnv, setFilterBackend, sizeAfterTransform, skewToAngle, styleProperties, textDecorationProperties, textDefaultValues, textLayoutProperties, transformPoint, twoMathPi, index$1 as util, VERSION as version };
 //# sourceMappingURL=index.node.mjs.map

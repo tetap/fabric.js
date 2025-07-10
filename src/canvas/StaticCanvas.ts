@@ -1012,7 +1012,7 @@ export class StaticCanvas<
       '" ',
       viewBox,
       'xml:space="preserve">\n',
-      '<desc>Created with Fabric.js ',
+      '<desc>Created with Tetap  qingfengfuyun1@gmail.com version:',
       VERSION,
       '</desc>\n',
       '<defs>\n',

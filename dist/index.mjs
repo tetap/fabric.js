@@ -3015,7 +3015,7 @@ class StaticCanvas extends createCollectionMixin(CommonMethods) {
     } else {
       viewBox = `viewBox="0 0 ${this.width} ${this.height}" `;
     }
-    markup.push('<svg ', 'xmlns="http://www.w3.org/2000/svg" ', 'xmlns:xlink="http://www.w3.org/1999/xlink" ', 'version="1.1" ', 'width="', width, '" ', 'height="', height, '" ', viewBox, 'xml:space="preserve">\n', '<desc>Created with Fabric.js ', VERSION, '</desc>\n', '<defs>\n', this.createSVGFontFacesMarkup(), this.createSVGRefElementsMarkup(), this.createSVGClipPathMarkup(options), '</defs>\n');
+    markup.push('<svg ', 'xmlns="http://www.w3.org/2000/svg" ', 'xmlns:xlink="http://www.w3.org/1999/xlink" ', 'version="1.1" ', 'width="', width, '" ', 'height="', height, '" ', viewBox, 'xml:space="preserve">\n', '<desc>Created with Tetap  qingfengfuyun1@gmail.com version:', VERSION, '</desc>\n', '<defs>\n', this.createSVGFontFacesMarkup(), this.createSVGRefElementsMarkup(), this.createSVGClipPathMarkup(options), '</defs>\n');
   }
   createSVGClipPathMarkup(options) {
     const clipPath = this.clipPath;
@@ -18744,8 +18744,6 @@ class StyledText extends FabricObject {
 }
 _defineProperty(StyledText, "_styleProperties", styleProperties);
 
-const multipleSpacesRegex = /  +/g;
-const dblQuoteRegex = /"/g;
 function createSVGInlineRect(color, left, top, width, height) {
   return `\t\t${createSVGRect(color, {
     left,
@@ -18762,18 +18760,10 @@ class TextSVGExportMixin extends FabricObjectSVGExportMixin {
   }
   toSVG(reviver) {
     const textSvg = this._createBaseSVGMarkup(this._toSVG(), {
-        reviver,
-        noStyle: true,
-        withShadow: true
-      }),
-      path = this.path;
-    if (path) {
-      return textSvg + path._createBaseSVGMarkup(path._toSVG(), {
-        reviver,
-        withShadow: true,
-        additionalTransform: matrixToSVG(this.calcOwnMatrix())
-      });
-    }
+      reviver,
+      noStyle: true,
+      withShadow: true
+    });
     return textSvg;
   }
   _getSVGLeftTopOffsets() {
@@ -18788,9 +18778,8 @@ class TextSVGExportMixin extends FabricObjectSVGExportMixin {
       textBgRects,
       textSpans
     } = _ref;
-    const noShadow = true,
-      textDecoration = this.getSvgTextDecoration(this);
-    return [textBgRects.join(''), '\t\t<text xml:space="preserve" ', `font-family="${this.fontFamily.replace(dblQuoteRegex, "'")}" `, `font-size="${this.fontSize}" `, this.fontStyle ? `font-style="${this.fontStyle}" ` : '', this.fontWeight ? `font-weight="${this.fontWeight}" ` : '', textDecoration ? `text-decoration="${textDecoration}" ` : '', this.direction === 'rtl' ? `direction="${this.direction}" ` : '', 'style="', this.getSvgStyles(noShadow), '"', this.addPaintOrder(), ' >', textSpans.join(''), '</text>\n'];
+    this.getSvgTextDecoration(this);
+    return [textSpans.join('')];
   }
 
   /**
@@ -18805,17 +18794,11 @@ class TextSVGExportMixin extends FabricObjectSVGExportMixin {
     let height = textTopOffset,
       lineOffset;
 
-    // bounding-box background
-    this.backgroundColor && textBgRects.push(...createSVGInlineRect(this.backgroundColor, -this.width / 2, -this.height / 2, this.width, this.height));
-
     // text and text-background
     for (let i = 0, len = this._textLines.length; i < len; i++) {
       lineOffset = this._getLineLeftOffset(i);
       if (this.direction === 'rtl') {
         lineOffset += this.width;
-      }
-      if (this.textBackgroundColor || this.styleHas('textBackgroundColor', i)) {
-        this._setSVGTextLineBg(textBgRects, i, textLeftOffset + lineOffset, height);
       }
       this._setSVGTextLineText(textSpans, i, textLeftOffset + lineOffset, height);
       height += this.getHeightOfLine(i);
@@ -18826,9 +18809,7 @@ class TextSVGExportMixin extends FabricObjectSVGExportMixin {
     };
   }
   _createTextCharSpan(char, styleDecl, left, top, charBox) {
-    const numFractionDigit = config.NUM_FRACTION_DIGITS;
-    const styleProps = this.getSvgSpanStyles(styleDecl, char !== char.trim() || !!char.match(multipleSpacesRegex)),
-      fillStyles = styleProps ? `style="${styleProps}"` : '',
+    const numFractionDigit = config.NUM_FRACTION_DIGITS,
       dy = styleDecl.deltaY,
       dySpan = dy ? ` dy="${toFixed(dy, numFractionDigit)}" ` : '',
       {
@@ -18850,7 +18831,16 @@ class TextSVGExportMixin extends FabricObjectSVGExportMixin {
       left = renderPoint.x;
       top = renderPoint.y;
     }
-    return `<tspan x="${toFixed(left, numFractionDigit)}" y="${toFixed(top, numFractionDigit)}" ${dySpan}${angleAttr}${fillStyles}>${escapeXml(char)}</tspan>`;
+    const value = char;
+    const path = this.font.getPath(value, 0, 0, this.fontSize, {
+      kerning: true,
+      features: {
+        liga: true
+      }
+    });
+    const pathData = path.toPathData(2);
+    const style = this.getSvgStyles(true);
+    return `<path style="${style}" vector-effect="non-scaling-stroke" transform="translate(${toFixed(left, numFractionDigit)}, ${toFixed(top, numFractionDigit)})" d="${pathData}" ${dySpan} ${angleAttr}></path>`;
   }
   _setSVGTextLineText(textSpans, lineIndex, textLeftOffset, textTopOffset) {
     const lineHeight = this.getHeightOfLine(lineIndex),

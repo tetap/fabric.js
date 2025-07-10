@@ -36,21 +36,10 @@ export class TextSVGExportMixin extends FabricObjectSVGExportMixin {
 
   toSVG(this: TextSVGExportMixin & FabricText, reviver?: TSVGReviver): string {
     const textSvg = this._createBaseSVGMarkup(this._toSVG(), {
-        reviver,
-        noStyle: true,
-        withShadow: true,
-      }),
-      path = this.path;
-    if (path) {
-      return (
-        textSvg +
-        path._createBaseSVGMarkup(path._toSVG(), {
-          reviver,
-          withShadow: true,
-          additionalTransform: matrixToSVG(this.calcOwnMatrix()),
-        })
-      );
-    }
+      reviver,
+      noStyle: true,
+      withShadow: true,
+    });
     return textSvg;
   }
 
@@ -74,6 +63,8 @@ export class TextSVGExportMixin extends FabricObjectSVGExportMixin {
   ) {
     const noShadow = true,
       textDecoration = this.getSvgTextDecoration(this);
+
+    return [textSpans.join('')];
     return [
       textBgRects.join(''),
       '\t\t<text xml:space="preserve" ',
@@ -109,31 +100,11 @@ export class TextSVGExportMixin extends FabricObjectSVGExportMixin {
     let height = textTopOffset,
       lineOffset;
 
-    // bounding-box background
-    this.backgroundColor &&
-      textBgRects.push(
-        ...createSVGInlineRect(
-          this.backgroundColor,
-          -this.width / 2,
-          -this.height / 2,
-          this.width,
-          this.height,
-        ),
-      );
-
     // text and text-background
     for (let i = 0, len = this._textLines.length; i < len; i++) {
       lineOffset = this._getLineLeftOffset(i);
       if (this.direction === 'rtl') {
         lineOffset += this.width;
-      }
-      if (this.textBackgroundColor || this.styleHas('textBackgroundColor', i)) {
-        this._setSVGTextLineBg(
-          textBgRects,
-          i,
-          textLeftOffset + lineOffset,
-          height,
-        );
       }
       this._setSVGTextLineText(
         textSpans,
@@ -158,12 +129,7 @@ export class TextSVGExportMixin extends FabricObjectSVGExportMixin {
     top: number,
     charBox: GraphemeBBox,
   ) {
-    const numFractionDigit = config.NUM_FRACTION_DIGITS;
-    const styleProps = this.getSvgSpanStyles(
-        styleDecl,
-        char !== char.trim() || !!char.match(multipleSpacesRegex),
-      ),
-      fillStyles = styleProps ? `style="${styleProps}"` : '',
+    const numFractionDigit = config.NUM_FRACTION_DIGITS,
       dy = styleDecl.deltaY,
       dySpan = dy ? ` dy="${toFixed(dy, numFractionDigit)}" ` : '',
       { angle, renderLeft, renderTop, width } = charBox;
@@ -180,10 +146,21 @@ export class TextSVGExportMixin extends FabricObjectSVGExportMixin {
       top = renderPoint.y;
     }
 
-    return `<tspan x="${toFixed(left, numFractionDigit)}" y="${toFixed(
-      top,
+    const value = char;
+    const path = (this as any).font.getPath(value, 0, 0, this.fontSize, {
+      kerning: true,
+      features: {
+        liga: true,
+      },
+    });
+    const pathData = path.toPathData(2);
+
+    const style = this.getSvgStyles(true);
+
+    return `<path style="${style}" vector-effect="non-scaling-stroke" transform="translate(${toFixed(
+      left,
       numFractionDigit,
-    )}" ${dySpan}${angleAttr}${fillStyles}>${escapeXml(char)}</tspan>`;
+    )}, ${toFixed(top, numFractionDigit)})" d="${pathData}" ${dySpan} ${angleAttr}></path>`;
   }
 
   private _setSVGTextLineText(

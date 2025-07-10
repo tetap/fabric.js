@@ -37,8 +37,8 @@ export function scaleIsProportional(
   eventData: TPointerEvent,
   fabricObject: FabricObject,
 ): boolean {
-  const canvas = fabricObject.canvas as Canvas,
-    uniformIsToggled = eventData[canvas.uniScaleKey!];
+  const canvas = fabricObject.canvas as Canvas;
+  const uniformIsToggled = !fabricObject.lockSize;
   return (
     (canvas.uniformScaling && !uniformIsToggled) ||
     (!canvas.uniformScaling && uniformIsToggled)

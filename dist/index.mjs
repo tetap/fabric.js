@@ -8691,8 +8691,8 @@ const rotationWithSnapping = wrapWithFireEvent(ROTATING, wrapWithFixedAnchor(rot
  * @return {Boolean} true if scale is proportional
  */
 function scaleIsProportional(eventData, fabricObject) {
-  const canvas = fabricObject.canvas,
-    uniformIsToggled = eventData[canvas.uniScaleKey];
+  const canvas = fabricObject.canvas;
+  const uniformIsToggled = !fabricObject.lockSize;
   return canvas.uniformScaling && !uniformIsToggled || !canvas.uniformScaling && uniformIsToggled;
 }
 
@@ -9070,7 +9070,8 @@ function isAltAction(eventData, target) {
  * @return {String} an action name
  */
 const scaleOrSkewActionName = (eventData, control, fabricObject) => {
-  const isAlternative = isAltAction(eventData, fabricObject);
+  // const isAlternative = isAltAction(eventData, fabricObject);
+  const isAlternative = false;
   if (control.x === 0) {
     // then is scaleY or skewX
     return isAlternative ? SKEW_X : SCALE_Y;
@@ -9120,34 +9121,38 @@ const scalingYOrSkewingX = (eventData, transform, x, y) => {
 
 // use this function if you want to generate new controls for every instance
 const createObjectDefaultControls = () => ({
-  ml: new Control({
-    x: -0.5,
-    y: 0,
-    cursorStyleHandler: scaleSkewCursorStyleHandler,
-    actionHandler: scalingXOrSkewingY,
-    getActionName: scaleOrSkewActionName
-  }),
-  mr: new Control({
-    x: 0.5,
-    y: 0,
-    cursorStyleHandler: scaleSkewCursorStyleHandler,
-    actionHandler: scalingXOrSkewingY,
-    getActionName: scaleOrSkewActionName
-  }),
-  mb: new Control({
-    x: 0,
-    y: 0.5,
-    cursorStyleHandler: scaleSkewCursorStyleHandler,
-    actionHandler: scalingYOrSkewingX,
-    getActionName: scaleOrSkewActionName
-  }),
-  mt: new Control({
-    x: 0,
-    y: -0.5,
-    cursorStyleHandler: scaleSkewCursorStyleHandler,
-    actionHandler: scalingYOrSkewingX,
-    getActionName: scaleOrSkewActionName
-  }),
+  // ml: new Control({
+  //   x: -0.5,
+  //   y: 0,
+  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
+  //   actionHandler: scalingXOrSkewingY,
+  //   getActionName: scaleOrSkewActionName,
+  // }),
+
+  // mr: new Control({
+  //   x: 0.5,
+  //   y: 0,
+  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
+  //   actionHandler: scalingXOrSkewingY,
+  //   getActionName: scaleOrSkewActionName,
+  // }),
+
+  // mb: new Control({
+  //   x: 0,
+  //   y: 0.5,
+  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
+  //   actionHandler: scalingYOrSkewingX,
+  //   getActionName: scaleOrSkewActionName,
+  // }),
+
+  // mt: new Control({
+  //   x: 0,
+  //   y: -0.5,
+  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
+  //   actionHandler: scalingYOrSkewingX,
+  //   getActionName: scaleOrSkewActionName,
+  // }),
+
   tl: new Control({
     x: -0.5,
     y: -0.5,
@@ -9770,7 +9775,12 @@ function applyMixins(derivedCtor, constructors) {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-class FabricObject extends InteractiveFabricObject {}
+class FabricObject extends InteractiveFabricObject {
+  constructor() {
+    super(...arguments);
+    _defineProperty(this, "lockSize", void 0);
+  }
+}
 applyMixins(FabricObject, [FabricObjectSVGExportMixin]);
 classRegistry.setClass(FabricObject);
 classRegistry.setClass(FabricObject, 'object');

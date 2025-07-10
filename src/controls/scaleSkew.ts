@@ -24,7 +24,8 @@ function isAltAction(eventData: TPointerEvent, target: FabricObject) {
 export const scaleOrSkewActionName: ControlCallback<
   TAxisKey<'skew' | 'scale'> | ''
 > = (eventData, control, fabricObject) => {
-  const isAlternative = isAltAction(eventData, fabricObject);
+  // const isAlternative = isAltAction(eventData, fabricObject);
+  const isAlternative = false
   if (control.x === 0) {
     // then is scaleY or skewX
     return isAlternative ? SKEW_X : SCALE_Y;

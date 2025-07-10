@@ -25,7 +25,7 @@ export const scaleOrSkewActionName: ControlCallback<
   TAxisKey<'skew' | 'scale'> | ''
 > = (eventData, control, fabricObject) => {
   // const isAlternative = isAltAction(eventData, fabricObject);
-  const isAlternative = false
+  const isAlternative = false;
   if (control.x === 0) {
     // then is scaleY or skewX
     return isAlternative ? SKEW_X : SCALE_Y;
@@ -50,9 +50,7 @@ export const scaleSkewCursorStyleHandler: ControlCursorCallback = (
   fabricObject,
   coord,
 ) => {
-  return isAltAction(eventData, fabricObject)
-    ? skewCursorStyleHandler(eventData, control, fabricObject, coord)
-    : scaleCursorStyleHandler(eventData, control, fabricObject, coord);
+  return scaleCursorStyleHandler(eventData, control, fabricObject, coord);
 };
 /**
  * Composed action handler to either scale X or skew Y
@@ -69,9 +67,7 @@ export const scalingXOrSkewingY: TransformActionHandler = (
   x,
   y,
 ) => {
-  return isAltAction(eventData, transform.target)
-    ? skewHandlerY(eventData, transform, x, y)
-    : scalingX(eventData, transform, x, y);
+  return scalingX(eventData, transform, x, y);
 };
 
 /**
@@ -89,7 +85,5 @@ export const scalingYOrSkewingX: TransformActionHandler = (
   x,
   y,
 ) => {
-  return isAltAction(eventData, transform.target)
-    ? skewHandlerX(eventData, transform, x, y)
-    : scalingY(eventData, transform, x, y);
+  return scalingY(eventData, transform, x, y);
 };

@@ -127,54 +127,54 @@ export default [
     plugins,
     onwarn,
   },
-  {
-    input: ['./index.node.ts'],
-    output: [
-      {
-        file: path.resolve(dirname, `${basename}.node.mjs`),
-        name: 'fabric',
-        format: 'es',
-        sourcemap: true,
-      },
-      // deprecated remove
-      {
-        file: path.resolve(dirname, `${basename}.node.cjs`),
-        name: 'fabric',
-        format: 'cjs',
-        sourcemap: true,
-      },
-    ],
-    plugins,
-    onwarn,
-    external: ['jsdom', 'jsdom/lib/jsdom/living/generated/utils.js', 'canvas'],
-  },
+  // {
+  //   input: ['./index.node.ts'],
+  //   output: [
+  //     {
+  //       file: path.resolve(dirname, `${basename}.node.mjs`),
+  //       name: 'fabric',
+  //       format: 'es',
+  //       sourcemap: true,
+  //     },
+  //     // deprecated remove
+  //     {
+  //       file: path.resolve(dirname, `${basename}.node.cjs`),
+  //       name: 'fabric',
+  //       format: 'cjs',
+  //       sourcemap: true,
+  //     },
+  //   ],
+  //   plugins,
+  //   onwarn,
+  //   external: ['jsdom', 'jsdom/lib/jsdom/living/generated/utils.js', 'canvas'],
+  // },
   // EXTENSIONS
 
-  {
-    input: ['./extensions/index.ts'],
-    external: ['fabric'],
-    output: [
-      // es modules in files
-      {
-        dir: path.resolve('./dist-extensions'),
-        format: 'es',
-        preserveModules: true,
-        entryFileNames: '[name].mjs',
-        sourcemap: true,
-      },
-      // umd module, the cdn one for fiddles, minified
-      {
-        file: path.resolve('./dist-extensions', `fabric-extensions.min.js`),
-        name: 'fabricExtensions',
-        format: 'umd',
-        sourcemap: true,
-        globals: {
-          fabric: 'fabric',
-        },
-        plugins: [terser()],
-      },
-    ],
-    plugins: pluginsExtensions,
-    onwarn,
-  },
+  // {
+  //   input: ['./extensions/index.ts'],
+  //   external: ['fabric'],
+  //   output: [
+  //     // es modules in files
+  //     {
+  //       dir: path.resolve('./dist-extensions'),
+  //       format: 'es',
+  //       preserveModules: true,
+  //       entryFileNames: '[name].mjs',
+  //       sourcemap: true,
+  //     },
+  //     // umd module, the cdn one for fiddles, minified
+  //     {
+  //       file: path.resolve('./dist-extensions', `fabric-extensions.min.js`),
+  //       name: 'fabricExtensions',
+  //       format: 'umd',
+  //       sourcemap: true,
+  //       globals: {
+  //         fabric: 'fabric',
+  //       },
+  //       plugins: [terser()],
+  //     },
+  //   ],
+  //   plugins: pluginsExtensions,
+  //   onwarn,
+  // },
 ];

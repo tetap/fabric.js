@@ -8886,14 +8886,186 @@ function scaleObject(eventData, transform, x, y) {
   // minScale is taken care of in the setter.
   const oldScaleX = target.scaleX,
     oldScaleY = target.scaleY;
-  if (!by) {
-    !isLocked(target, 'lockScalingX') && target.set(SCALE_X, scaleX);
-    !isLocked(target, 'lockScalingY') && target.set(SCALE_Y, scaleY);
-  } else {
-    // forbidden cases already handled on top here.
-    by === 'x' && target.set(SCALE_X, scaleX);
-    by === 'y' && target.set(SCALE_Y, scaleY);
+  !isLocked(target, 'lockScalingX') && target.set(SCALE_X, scaleX);
+  !isLocked(target, 'lockScalingY') && target.set(SCALE_Y, scaleY);
+  return oldScaleX !== target.scaleX || oldScaleY !== target.scaleY;
+}
+
+/**
+ * Basic scaling logic, reused with different constrain for scaling X,Y, freely or equally.
+ * Needs to be wrapped with `wrapWithFixedAnchor` to be effective
+ * @param {Event} eventData javascript event that is doing the transform
+ * @param {Object} transform javascript object containing a series of information around the current transform
+ * @param {number} x current mouse x position, canvas normalized
+ * @param {number} y current mouse y position, canvas normalized
+ * @param {Object} options additional information for scaling
+ * @param {String} options.by 'x', 'y', 'equally' or '' to indicate type of scaling
+ * @return {Boolean} true if some change happened
+ * @private
+ */
+function scaleObjectByX(eventData, transform, x, y) {
+  let options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+  const target = transform.target;
+    options.by;
+    const scaleProportionally = scaleIsProportional(eventData, target),
+    forbidScaling = scalingIsForbidden(target, undefined, scaleProportionally);
+  let newPoint, scaleX, scaleY, dim, signX, signY;
+  if (forbidScaling) {
+    return false;
   }
+  if (transform.gestureScale) {
+    scaleX = transform.scaleX * transform.gestureScale;
+    scaleY = transform.scaleY * transform.gestureScale;
+  } else {
+    newPoint = getLocalPoint(transform, transform.originX, transform.originY, x, y);
+    // use of sign: We use sign to detect change of direction of an action. sign usually change when
+    // we cross the origin point with the mouse. So a scale flip for example. There is an issue when scaling
+    // by center and scaling using one middle control ( default: mr, mt, ml, mb), the mouse movement can easily
+    // cross many time the origin point and flip the object. so we need a way to filter out the noise.
+    // This ternary here should be ok to filter out X scaling when we want Y only and vice versa.
+    signX = Math.sign(newPoint.x || transform.signX || 1);
+    signY = Math.sign(newPoint.y || transform.signY || 1);
+    if (!transform.signX) {
+      transform.signX = signX;
+    }
+    if (!transform.signY) {
+      transform.signY = signY;
+    }
+
+    // if (
+    //   isLocked(target, 'lockScalingFlip') &&
+    //   (transform.signX !== signX || transform.signY !== signY)
+    // ) {
+    //   return false;
+    // }
+
+    dim = target._getTransformedDimensions();
+    // missing detection of flip and logic to switch the origin
+    console.log('scaleProportionally', scaleProportionally);
+    if (scaleProportionally) {
+      // uniform scaling
+      const {
+        original
+      } = transform;
+      const distance = Math.sqrt(newPoint.x ** 2 + newPoint.x ** 2);
+      const originalDistance = Math.sqrt((dim.x * transform.original.scaleX / target.scaleX) ** 2 + (dim.x * transform.original.scaleX / target.scaleX) ** 2);
+      const scale = distance / originalDistance;
+      scaleX = original.scaleX * scale;
+      scaleY = original.scaleY * scale;
+    } else {
+      scaleX = Math.abs(newPoint.x * target.scaleX / dim.x);
+      scaleY = Math.abs(newPoint.y * target.scaleY / dim.y);
+    }
+    // if we are scaling by center, we need to double the scale
+    if (isTransformCentered(transform)) {
+      scaleX *= 2;
+      scaleY *= 2;
+    }
+    // if (transform.signX !== signX) {
+    //   transform.originX = invertOrigin(transform.originX);
+    //   scaleX *= -1;
+    //   transform.signX = signX;
+    // }
+    // if (transform.signY !== signY) {
+    //   transform.originY = invertOrigin(transform.originY);
+    //   scaleY *= -1;
+    //   transform.signY = signY;
+    // }
+  }
+  // minScale is taken care of in the setter.
+  const oldScaleX = target.scaleX,
+    oldScaleY = target.scaleY;
+  !isLocked(target, 'lockScalingX') && target.set(SCALE_X, scaleX);
+  !isLocked(target, 'lockScalingY') && target.set(SCALE_Y, scaleY);
+  // if (!by) {
+  // } else {
+  //   // forbidden cases already handled on top here.
+  //   by === 'x' && target.set(SCALE_X, scaleX);
+  //   by === 'y' && target.set(SCALE_Y, scaleY);
+  // }
+  return oldScaleX !== target.scaleX || oldScaleY !== target.scaleY;
+}
+
+/**
+ * Basic scaling logic, reused with different constrain for scaling X,Y, freely or equally.
+ * Needs to be wrapped with `wrapWithFixedAnchor` to be effective
+ * @param {Event} eventData javascript event that is doing the transform
+ * @param {Object} transform javascript object containing a series of information around the current transform
+ * @param {number} x current mouse x position, canvas normalized
+ * @param {number} y current mouse y position, canvas normalized
+ * @param {Object} options additional information for scaling
+ * @param {String} options.by 'x', 'y', 'equally' or '' to indicate type of scaling
+ * @return {Boolean} true if some change happened
+ * @private
+ */
+function scaleObjectByY(eventData, transform, x, y) {
+  let options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+  const target = transform.target,
+    by = options.by,
+    scaleProportionally = scaleIsProportional(eventData, target),
+    forbidScaling = scalingIsForbidden(target, by, scaleProportionally);
+  let newPoint, scaleX, scaleY, dim, signX, signY;
+  if (forbidScaling) {
+    return false;
+  }
+  if (transform.gestureScale) {
+    scaleX = transform.scaleX * transform.gestureScale;
+    scaleY = transform.scaleY * transform.gestureScale;
+  } else {
+    newPoint = getLocalPoint(transform, transform.originX, transform.originY, x, y);
+    // use of sign: We use sign to detect change of direction of an action. sign usually change when
+    // we cross the origin point with the mouse. So a scale flip for example. There is an issue when scaling
+    // by center and scaling using one middle control ( default: mr, mt, ml, mb), the mouse movement can easily
+    // cross many time the origin point and flip the object. so we need a way to filter out the noise.
+    // This ternary here should be ok to filter out X scaling when we want Y only and vice versa.
+    signX = by !== 'y' ? Math.sign(newPoint.x || transform.signX || 1) : 1;
+    signY = by !== 'x' ? Math.sign(newPoint.y || transform.signY || 1) : 1;
+    if (!transform.signX) {
+      transform.signX = signX;
+    }
+    if (!transform.signY) {
+      transform.signY = signY;
+    }
+    if (isLocked(target, 'lockScalingFlip') && (transform.signX !== signX || transform.signY !== signY)) {
+      return false;
+    }
+    dim = target._getTransformedDimensions();
+    // missing detection of flip and logic to switch the origin
+    if (scaleProportionally && !by) {
+      // uniform scaling
+      const distance = Math.abs(newPoint.x) + Math.abs(newPoint.y),
+        {
+          original
+        } = transform,
+        originalDistance = Math.abs(dim.x * original.scaleX / target.scaleX) + Math.abs(dim.y * original.scaleY / target.scaleY),
+        scale = distance / originalDistance;
+      scaleX = original.scaleX * scale;
+      scaleY = original.scaleY * scale;
+    } else {
+      scaleX = Math.abs(newPoint.x * target.scaleX / dim.x);
+      scaleY = Math.abs(newPoint.y * target.scaleY / dim.y);
+    }
+    // if we are scaling by center, we need to double the scale
+    if (isTransformCentered(transform)) {
+      scaleX *= 2;
+      scaleY *= 2;
+    }
+    if (transform.signX !== signX && by !== 'y') {
+      transform.originX = invertOrigin(transform.originX);
+      scaleX *= -1;
+      transform.signX = signX;
+    }
+    if (transform.signY !== signY && by !== 'x') {
+      transform.originY = invertOrigin(transform.originY);
+      scaleY *= -1;
+      transform.signY = signY;
+    }
+  }
+  // minScale is taken care of in the setter.
+  const oldScaleX = target.scaleX,
+    oldScaleY = target.scaleY;
+  !isLocked(target, 'lockScalingX') && target.set(SCALE_X, scaleX);
+  !isLocked(target, 'lockScalingY') && target.set(SCALE_Y, scaleY);
   return oldScaleX !== target.scaleX || oldScaleY !== target.scaleY;
 }
 
@@ -8920,7 +9092,10 @@ const scaleObjectFromCorner = (eventData, transform, x, y) => {
  * @return {Boolean} true if some change happened
  */
 const scaleObjectX = (eventData, transform, x, y) => {
-  return scaleObject(eventData, transform, x, y, {
+  const target = eventData.target;
+  return target.lockSize ? scaleObjectByX(eventData, transform, x, y, {
+    by: 'x'
+  }) : scaleObject(eventData, transform, x, y, {
     by: 'x'
   });
 };
@@ -8935,188 +9110,16 @@ const scaleObjectX = (eventData, transform, x, y) => {
  * @return {Boolean} true if some change happened
  */
 const scaleObjectY = (eventData, transform, x, y) => {
-  return scaleObject(eventData, transform, x, y, {
+  const target = eventData.target;
+  return target.lockSize ? scaleObjectByY(eventData, transform, x, y, {
+    by: 'y'
+  }) : scaleObject(eventData, transform, x, y, {
     by: 'y'
   });
 };
 const scalingEqually = wrapWithFireEvent(SCALING, wrapWithFixedAnchor(scaleObjectFromCorner));
 const scalingX = wrapWithFireEvent(SCALING, wrapWithFixedAnchor(scaleObjectX));
 const scalingY = wrapWithFireEvent(SCALING, wrapWithFixedAnchor(scaleObjectY));
-
-const AXIS_KEYS = {
-  x: {
-    counterAxis: 'y',
-    scale: SCALE_X,
-    skew: SKEW_X,
-    lockSkewing: 'lockSkewingX',
-    origin: 'originX',
-    flip: 'flipX'
-  },
-  y: {
-    counterAxis: 'x',
-    scale: SCALE_Y,
-    skew: SKEW_Y,
-    lockSkewing: 'lockSkewingY',
-    origin: 'originY',
-    flip: 'flipY'
-  }
-};
-const skewMap = ['ns', 'nesw', 'ew', 'nwse'];
-
-/**
- * return the correct cursor style for the skew action
- * @param {Event} eventData the javascript event that is causing the scale
- * @param {Control} control the control that is interested in the action
- * @param {FabricObject} fabricObject the fabric object that is interested in the action
- * @return {String} a valid css string for the cursor
- */
-const skewCursorStyleHandler = (eventData, control, fabricObject, coord) => {
-  if (control.x !== 0 && isLocked(fabricObject, 'lockSkewingY')) {
-    return NOT_ALLOWED_CURSOR;
-  }
-  if (control.y !== 0 && isLocked(fabricObject, 'lockSkewingX')) {
-    return NOT_ALLOWED_CURSOR;
-  }
-  const n = findCornerQuadrant(fabricObject, control, coord) % 4;
-  return `${skewMap[n]}-resize`;
-};
-
-/**
- * Since skewing is applied before scaling, calculations are done in a scaleless plane
- * @see https://github.com/fabricjs/fabric.js/pull/8380
- */
-function skewObject(axis, _ref, pointer) {
-  let {
-    target,
-    ex,
-    ey,
-    skewingSide,
-    ...transform
-  } = _ref;
-  const {
-      skew: skewKey
-    } = AXIS_KEYS[axis],
-    offset = pointer.subtract(new Point(ex, ey)).divide(new Point(target.scaleX, target.scaleY))[axis],
-    skewingBefore = target[skewKey],
-    skewingStart = transform[skewKey],
-    shearingStart = Math.tan(degreesToRadians(skewingStart)),
-    // let a, b be the size of target
-    // let a' be the value of a after applying skewing
-    // then:
-    // a' = a + b * skewA => skewA = (a' - a) / b
-    // the value b is tricky since skewY is applied before skewX
-    b = axis === 'y' ? target._getTransformedDimensions({
-      scaleX: 1,
-      scaleY: 1,
-      // since skewY is applied before skewX, b (=width) is not affected by skewX
-      skewX: 0
-    }).x : target._getTransformedDimensions({
-      scaleX: 1,
-      scaleY: 1
-    }).y;
-  const shearing = 2 * offset * skewingSide /
-   // we max out fractions to safeguard from asymptotic behavior
-  Math.max(b, 1) +
-  // add starting state
-  shearingStart;
-  const skewing = radiansToDegrees(Math.atan(shearing));
-  target.set(skewKey, skewing);
-  const changed = skewingBefore !== target[skewKey];
-  if (changed && axis === 'y') {
-    // we don't want skewing to affect scaleX
-    // so we factor it by the inverse skewing diff to make it seem unchanged to the viewer
-    const {
-        skewX,
-        scaleX
-      } = target,
-      dimBefore = target._getTransformedDimensions({
-        skewY: skewingBefore
-      }),
-      dimAfter = target._getTransformedDimensions(),
-      compensationFactor = skewX !== 0 ? dimBefore.x / dimAfter.x : 1;
-    compensationFactor !== 1 && target.set(SCALE_X, compensationFactor * scaleX);
-  }
-  return changed;
-}
-
-/**
- * Wrapped Action handler for skewing on a given axis, takes care of the
- * skew direction and determines the correct transform origin for the anchor point
- * @param {Event} eventData javascript event that is doing the transform
- * @param {Object} transform javascript object containing a series of information around the current transform
- * @param {number} x current mouse x position, canvas normalized
- * @param {number} y current mouse y position, canvas normalized
- * @return {Boolean} true if some change happened
- */
-function skewHandler(axis, eventData, transform, x, y) {
-  const {
-      target
-    } = transform,
-    {
-      counterAxis,
-      origin: originKey,
-      lockSkewing: lockSkewingKey,
-      skew: skewKey,
-      flip: flipKey
-    } = AXIS_KEYS[axis];
-  if (isLocked(target, lockSkewingKey)) {
-    return false;
-  }
-  const {
-      origin: counterOriginKey,
-      flip: counterFlipKey
-    } = AXIS_KEYS[counterAxis],
-    counterOriginFactor = resolveOrigin(transform[counterOriginKey]) * (target[counterFlipKey] ? -1 : 1),
-    // if the counter origin is top/left (= -0.5) then we are skewing x/y values on the bottom/right side of target respectively.
-    // if the counter origin is bottom/right (= 0.5) then we are skewing x/y values on the top/left side of target respectively.
-    // skewing direction on the top/left side of target is OPPOSITE to the direction of the movement of the pointer,
-    // so we factor skewing direction by this value.
-    skewingSide = -Math.sign(counterOriginFactor) * (target[flipKey] ? -1 : 1),
-    skewingDirection = (target[skewKey] === 0 &&
-    // in case skewing equals 0 we use the pointer offset from target center to determine the direction of skewing
-    getLocalPoint(transform, CENTER, CENTER, x, y)[axis] > 0 ||
-    // in case target has skewing we use that as the direction
-    target[skewKey] > 0 ? 1 : -1) * skewingSide,
-    // anchor to the opposite side of the skewing direction
-    // normalize value from [-1, 1] to origin value [0, 1]
-    origin = -skewingDirection * 0.5 + 0.5;
-  const finalHandler = wrapWithFireEvent(SKEWING, wrapWithFixedAnchor((eventData, transform, x, y) => skewObject(axis, transform, new Point(x, y))));
-  return finalHandler(eventData, {
-    ...transform,
-    [originKey]: origin,
-    skewingSide
-  }, x, y);
-}
-
-/**
- * Wrapped Action handler for skewing on the X axis, takes care of the
- * skew direction and determines the correct transform origin for the anchor point
- * @param {Event} eventData javascript event that is doing the transform
- * @param {Object} transform javascript object containing a series of information around the current transform
- * @param {number} x current mouse x position, canvas normalized
- * @param {number} y current mouse y position, canvas normalized
- * @return {Boolean} true if some change happened
- */
-const skewHandlerX = (eventData, transform, x, y) => {
-  return skewHandler('x', eventData, transform, x, y);
-};
-
-/**
- * Wrapped Action handler for skewing on the Y axis, takes care of the
- * skew direction and determines the correct transform origin for the anchor point
- * @param {Event} eventData javascript event that is doing the transform
- * @param {Object} transform javascript object containing a series of information around the current transform
- * @param {number} x current mouse x position, canvas normalized
- * @param {number} y current mouse y position, canvas normalized
- * @return {Boolean} true if some change happened
- */
-const skewHandlerY = (eventData, transform, x, y) => {
-  return skewHandler('y', eventData, transform, x, y);
-};
-
-function isAltAction(eventData, target) {
-  return eventData[target.canvas.altActionKey];
-}
 
 /**
  * Inspect event, control and fabricObject to return the correct action name
@@ -9147,7 +9150,7 @@ const scaleOrSkewActionName = (eventData, control, fabricObject) => {
  * @return {String} a valid css string for the cursor
  */
 const scaleSkewCursorStyleHandler = (eventData, control, fabricObject, coord) => {
-  return isAltAction(eventData, fabricObject) ? skewCursorStyleHandler(eventData, control, fabricObject, coord) : scaleCursorStyleHandler(eventData, control, fabricObject, coord);
+  return scaleCursorStyleHandler(eventData, control, fabricObject, coord);
 };
 /**
  * Composed action handler to either scale X or skew Y
@@ -9159,7 +9162,7 @@ const scaleSkewCursorStyleHandler = (eventData, control, fabricObject, coord) =>
  * @return {Boolean} true if some change happened
  */
 const scalingXOrSkewingY = (eventData, transform, x, y) => {
-  return isAltAction(eventData, transform.target) ? skewHandlerY(eventData, transform, x, y) : scalingX(eventData, transform, x, y);
+  return scalingX(eventData, transform, x, y);
 };
 
 /**
@@ -9172,43 +9175,39 @@ const scalingXOrSkewingY = (eventData, transform, x, y) => {
  * @return {Boolean} true if some change happened
  */
 const scalingYOrSkewingX = (eventData, transform, x, y) => {
-  return isAltAction(eventData, transform.target) ? skewHandlerX(eventData, transform, x, y) : scalingY(eventData, transform, x, y);
+  return scalingY(eventData, transform, x, y);
 };
 
 // use this function if you want to generate new controls for every instance
 const createObjectDefaultControls = () => ({
-  // ml: new Control({
-  //   x: -0.5,
-  //   y: 0,
-  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
-  //   actionHandler: scalingXOrSkewingY,
-  //   getActionName: scaleOrSkewActionName,
-  // }),
-
-  // mr: new Control({
-  //   x: 0.5,
-  //   y: 0,
-  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
-  //   actionHandler: scalingXOrSkewingY,
-  //   getActionName: scaleOrSkewActionName,
-  // }),
-
-  // mb: new Control({
-  //   x: 0,
-  //   y: 0.5,
-  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
-  //   actionHandler: scalingYOrSkewingX,
-  //   getActionName: scaleOrSkewActionName,
-  // }),
-
-  // mt: new Control({
-  //   x: 0,
-  //   y: -0.5,
-  //   cursorStyleHandler: scaleSkewCursorStyleHandler,
-  //   actionHandler: scalingYOrSkewingX,
-  //   getActionName: scaleOrSkewActionName,
-  // }),
-
+  ml: new Control({
+    x: -0.5,
+    y: 0,
+    cursorStyleHandler: scaleSkewCursorStyleHandler,
+    actionHandler: scalingXOrSkewingY,
+    getActionName: scaleOrSkewActionName
+  }),
+  mr: new Control({
+    x: 0.5,
+    y: 0,
+    cursorStyleHandler: scaleSkewCursorStyleHandler,
+    actionHandler: scalingXOrSkewingY,
+    getActionName: scaleOrSkewActionName
+  }),
+  mb: new Control({
+    x: 0,
+    y: 0.5,
+    cursorStyleHandler: scaleSkewCursorStyleHandler,
+    actionHandler: scalingYOrSkewingX,
+    getActionName: scaleOrSkewActionName
+  }),
+  mt: new Control({
+    x: 0,
+    y: -0.5,
+    cursorStyleHandler: scaleSkewCursorStyleHandler,
+    actionHandler: scalingYOrSkewingX,
+    getActionName: scaleOrSkewActionName
+  }),
   tl: new Control({
     x: -0.5,
     y: -0.5,
@@ -25675,6 +25674,177 @@ function createPolyControls(arg0) {
   }
   return controls;
 }
+
+const AXIS_KEYS = {
+  x: {
+    counterAxis: 'y',
+    scale: SCALE_X,
+    skew: SKEW_X,
+    lockSkewing: 'lockSkewingX',
+    origin: 'originX',
+    flip: 'flipX'
+  },
+  y: {
+    counterAxis: 'x',
+    scale: SCALE_Y,
+    skew: SKEW_Y,
+    lockSkewing: 'lockSkewingY',
+    origin: 'originY',
+    flip: 'flipY'
+  }
+};
+const skewMap = ['ns', 'nesw', 'ew', 'nwse'];
+
+/**
+ * return the correct cursor style for the skew action
+ * @param {Event} eventData the javascript event that is causing the scale
+ * @param {Control} control the control that is interested in the action
+ * @param {FabricObject} fabricObject the fabric object that is interested in the action
+ * @return {String} a valid css string for the cursor
+ */
+const skewCursorStyleHandler = (eventData, control, fabricObject, coord) => {
+  if (control.x !== 0 && isLocked(fabricObject, 'lockSkewingY')) {
+    return NOT_ALLOWED_CURSOR;
+  }
+  if (control.y !== 0 && isLocked(fabricObject, 'lockSkewingX')) {
+    return NOT_ALLOWED_CURSOR;
+  }
+  const n = findCornerQuadrant(fabricObject, control, coord) % 4;
+  return `${skewMap[n]}-resize`;
+};
+
+/**
+ * Since skewing is applied before scaling, calculations are done in a scaleless plane
+ * @see https://github.com/fabricjs/fabric.js/pull/8380
+ */
+function skewObject(axis, _ref, pointer) {
+  let {
+    target,
+    ex,
+    ey,
+    skewingSide,
+    ...transform
+  } = _ref;
+  const {
+      skew: skewKey
+    } = AXIS_KEYS[axis],
+    offset = pointer.subtract(new Point(ex, ey)).divide(new Point(target.scaleX, target.scaleY))[axis],
+    skewingBefore = target[skewKey],
+    skewingStart = transform[skewKey],
+    shearingStart = Math.tan(degreesToRadians(skewingStart)),
+    // let a, b be the size of target
+    // let a' be the value of a after applying skewing
+    // then:
+    // a' = a + b * skewA => skewA = (a' - a) / b
+    // the value b is tricky since skewY is applied before skewX
+    b = axis === 'y' ? target._getTransformedDimensions({
+      scaleX: 1,
+      scaleY: 1,
+      // since skewY is applied before skewX, b (=width) is not affected by skewX
+      skewX: 0
+    }).x : target._getTransformedDimensions({
+      scaleX: 1,
+      scaleY: 1
+    }).y;
+  const shearing = 2 * offset * skewingSide /
+   // we max out fractions to safeguard from asymptotic behavior
+  Math.max(b, 1) +
+  // add starting state
+  shearingStart;
+  const skewing = radiansToDegrees(Math.atan(shearing));
+  target.set(skewKey, skewing);
+  const changed = skewingBefore !== target[skewKey];
+  if (changed && axis === 'y') {
+    // we don't want skewing to affect scaleX
+    // so we factor it by the inverse skewing diff to make it seem unchanged to the viewer
+    const {
+        skewX,
+        scaleX
+      } = target,
+      dimBefore = target._getTransformedDimensions({
+        skewY: skewingBefore
+      }),
+      dimAfter = target._getTransformedDimensions(),
+      compensationFactor = skewX !== 0 ? dimBefore.x / dimAfter.x : 1;
+    compensationFactor !== 1 && target.set(SCALE_X, compensationFactor * scaleX);
+  }
+  return changed;
+}
+
+/**
+ * Wrapped Action handler for skewing on a given axis, takes care of the
+ * skew direction and determines the correct transform origin for the anchor point
+ * @param {Event} eventData javascript event that is doing the transform
+ * @param {Object} transform javascript object containing a series of information around the current transform
+ * @param {number} x current mouse x position, canvas normalized
+ * @param {number} y current mouse y position, canvas normalized
+ * @return {Boolean} true if some change happened
+ */
+function skewHandler(axis, eventData, transform, x, y) {
+  const {
+      target
+    } = transform,
+    {
+      counterAxis,
+      origin: originKey,
+      lockSkewing: lockSkewingKey,
+      skew: skewKey,
+      flip: flipKey
+    } = AXIS_KEYS[axis];
+  if (isLocked(target, lockSkewingKey)) {
+    return false;
+  }
+  const {
+      origin: counterOriginKey,
+      flip: counterFlipKey
+    } = AXIS_KEYS[counterAxis],
+    counterOriginFactor = resolveOrigin(transform[counterOriginKey]) * (target[counterFlipKey] ? -1 : 1),
+    // if the counter origin is top/left (= -0.5) then we are skewing x/y values on the bottom/right side of target respectively.
+    // if the counter origin is bottom/right (= 0.5) then we are skewing x/y values on the top/left side of target respectively.
+    // skewing direction on the top/left side of target is OPPOSITE to the direction of the movement of the pointer,
+    // so we factor skewing direction by this value.
+    skewingSide = -Math.sign(counterOriginFactor) * (target[flipKey] ? -1 : 1),
+    skewingDirection = (target[skewKey] === 0 &&
+    // in case skewing equals 0 we use the pointer offset from target center to determine the direction of skewing
+    getLocalPoint(transform, CENTER, CENTER, x, y)[axis] > 0 ||
+    // in case target has skewing we use that as the direction
+    target[skewKey] > 0 ? 1 : -1) * skewingSide,
+    // anchor to the opposite side of the skewing direction
+    // normalize value from [-1, 1] to origin value [0, 1]
+    origin = -skewingDirection * 0.5 + 0.5;
+  const finalHandler = wrapWithFireEvent(SKEWING, wrapWithFixedAnchor((eventData, transform, x, y) => skewObject(axis, transform, new Point(x, y))));
+  return finalHandler(eventData, {
+    ...transform,
+    [originKey]: origin,
+    skewingSide
+  }, x, y);
+}
+
+/**
+ * Wrapped Action handler for skewing on the X axis, takes care of the
+ * skew direction and determines the correct transform origin for the anchor point
+ * @param {Event} eventData javascript event that is doing the transform
+ * @param {Object} transform javascript object containing a series of information around the current transform
+ * @param {number} x current mouse x position, canvas normalized
+ * @param {number} y current mouse y position, canvas normalized
+ * @return {Boolean} true if some change happened
+ */
+const skewHandlerX = (eventData, transform, x, y) => {
+  return skewHandler('x', eventData, transform, x, y);
+};
+
+/**
+ * Wrapped Action handler for skewing on the Y axis, takes care of the
+ * skew direction and determines the correct transform origin for the anchor point
+ * @param {Event} eventData javascript event that is doing the transform
+ * @param {Object} transform javascript object containing a series of information around the current transform
+ * @param {number} x current mouse x position, canvas normalized
+ * @param {number} y current mouse y position, canvas normalized
+ * @return {Boolean} true if some change happened
+ */
+const skewHandlerY = (eventData, transform, x, y) => {
+  return skewHandler('y', eventData, transform, x, y);
+};
 
 const ACTION_NAME = 'modifyPath';
 const calcPathPointPosition = (pathObject, commandIndex, pointIndex) => {

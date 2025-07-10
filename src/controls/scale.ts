@@ -207,6 +207,7 @@ function scaleObject(
   // minScale is taken care of in the setter.
   const oldScaleX = target.scaleX,
     oldScaleY = target.scaleY;
+
   if (!by) {
     !isLocked(target, 'lockScalingX') && target.set(SCALE_X, scaleX);
     !isLocked(target, 'lockScalingY') && target.set(SCALE_Y, scaleY);
@@ -215,6 +216,186 @@ function scaleObject(
     by === 'x' && target.set(SCALE_X, scaleX);
     by === 'y' && target.set(SCALE_Y, scaleY);
   }
+  return oldScaleX !== target.scaleX || oldScaleY !== target.scaleY;
+}
+
+/**
+ * Basic scaling logic, reused with different constrain for scaling X,Y, freely or equally.
+ * Needs to be wrapped with `wrapWithFixedAnchor` to be effective
+ * @param {Event} eventData javascript event that is doing the transform
+ * @param {Object} transform javascript object containing a series of information around the current transform
+ * @param {number} x current mouse x position, canvas normalized
+ * @param {number} y current mouse y position, canvas normalized
+ * @param {Object} options additional information for scaling
+ * @param {String} options.by 'x', 'y', 'equally' or '' to indicate type of scaling
+ * @return {Boolean} true if some change happened
+ * @private
+ */
+function scaleObjectByX(
+  eventData: TPointerEvent,
+  transform: ScaleTransform,
+  x: number,
+  y: number,
+  options: { by?: ScaleBy } = {},
+) {
+  const target = transform.target,
+    by = options.by,
+    scaleProportionally = scaleIsProportional(eventData, target),
+    forbidScaling = scalingIsForbidden(target, undefined, scaleProportionally);
+  let newPoint, scaleX, scaleY, dim, signX, signY;
+
+  if (forbidScaling) {
+    return false;
+  }
+  if (transform.gestureScale) {
+    scaleX = transform.scaleX * transform.gestureScale;
+    scaleY = transform.scaleY * transform.gestureScale;
+  } else {
+    newPoint = getLocalPoint(
+      transform,
+      transform.originX,
+      transform.originY,
+      x,
+      y,
+    );
+    signX = Math.sign(newPoint.x || transform.signX || 1);
+    signY = Math.sign(newPoint.y || transform.signY || 1);
+    if (!transform.signX) {
+      transform.signX = signX;
+    }
+    if (!transform.signY) {
+      transform.signY = signY;
+    }
+
+    if (
+      isLocked(target, 'lockScalingFlip') &&
+      // (transform.signX !== signX || transform.signY !== signY)
+      transform.signX !== signX
+    ) {
+      return false;
+    }
+
+    dim = target._getTransformedDimensions();
+    // uniform scaling
+    const { original } = transform;
+    const distance = Math.sqrt(newPoint.x ** 2 + newPoint.x ** 2);
+    const originalDistance = Math.sqrt(
+      ((dim.x * transform.original.scaleX) / target.scaleX) ** 2 +
+        ((dim.x * transform.original.scaleX) / target.scaleX) ** 2,
+    );
+    const scale = distance / originalDistance;
+    scaleX = original.scaleX * scale;
+    scaleY = original.scaleY * scale;
+    // if we are scaling by center, we need to double the scale
+    if (isTransformCentered(transform)) {
+      scaleX *= 2;
+      scaleY *= 2;
+    }
+    if (transform.signX !== signX) {
+      transform.originX = invertOrigin(transform.originX);
+      scaleX *= -1;
+      transform.signX = signX;
+    }
+    // if (transform.signY !== signY) {
+    //   transform.originY = invertOrigin(transform.originY);
+    //   scaleY *= -1;
+    //   transform.signY = signY;
+    // }
+  }
+  const oldScaleX = target.scaleX,
+    oldScaleY = target.scaleY;
+  !isLocked(target, 'lockScalingX') && target.set(SCALE_X, scaleX);
+  !isLocked(target, 'lockScalingY') && target.set(SCALE_Y, scaleY);
+  return oldScaleX !== target.scaleX || oldScaleY !== target.scaleY;
+}
+
+/**
+ * Basic scaling logic, reused with different constrain for scaling X,Y, freely or equally.
+ * Needs to be wrapped with `wrapWithFixedAnchor` to be effective
+ * @param {Event} eventData javascript event that is doing the transform
+ * @param {Object} transform javascript object containing a series of information around the current transform
+ * @param {number} x current mouse x position, canvas normalized
+ * @param {number} y current mouse y position, canvas normalized
+ * @param {Object} options additional information for scaling
+ * @param {String} options.by 'x', 'y', 'equally' or '' to indicate type of scaling
+ * @return {Boolean} true if some change happened
+ * @private
+ */
+function scaleObjectByY(
+  eventData: TPointerEvent,
+  transform: ScaleTransform,
+  x: number,
+  y: number,
+  options: { by?: ScaleBy } = {},
+) {
+  const target = transform.target,
+    by = options.by,
+    scaleProportionally = scaleIsProportional(eventData, target),
+    forbidScaling = scalingIsForbidden(target, undefined, scaleProportionally);
+  let newPoint, scaleX, scaleY, dim, signX, signY;
+
+  if (forbidScaling) {
+    return false;
+  }
+  if (transform.gestureScale) {
+    scaleX = transform.scaleX * transform.gestureScale;
+    scaleY = transform.scaleY * transform.gestureScale;
+  } else {
+    newPoint = getLocalPoint(
+      transform,
+      transform.originX,
+      transform.originY,
+      x,
+      y,
+    );
+    signX = Math.sign(newPoint.x || transform.signX || 1);
+    signY = Math.sign(newPoint.y || transform.signY || 1);
+    if (!transform.signX) {
+      transform.signX = signX;
+    }
+    if (!transform.signY) {
+      transform.signY = signY;
+    }
+
+    if (
+      isLocked(target, 'lockScalingFlip') &&
+      // (transform.signX !== signX || transform.signY !== signY)
+      transform.signY !== signY
+    ) {
+      return false;
+    }
+
+    dim = target._getTransformedDimensions();
+    // uniform scaling
+    const { original } = transform;
+    const distance = Math.sqrt(newPoint.y ** 2 + newPoint.y ** 2);
+    const originalDistance = Math.sqrt(
+      ((dim.y * transform.original.scaleY) / target.scaleY) ** 2 +
+        ((dim.y * transform.original.scaleY) / target.scaleY) ** 2,
+    );
+    const scale = distance / originalDistance;
+    scaleX = original.scaleX * scale;
+    scaleY = original.scaleY * scale;
+    // if we are scaling by center, we need to double the scale
+    if (isTransformCentered(transform)) {
+      scaleX *= 2;
+      scaleY *= 2;
+    }
+    // if (transform.signX !== signX) {
+    //   transform.originX = invertOrigin(transform.originX);
+    //   scaleX *= -1;
+    //   transform.signX = signX;
+    // }
+    if (transform.signY !== signY) {
+      transform.originY = invertOrigin(transform.originY);
+      scaleY *= -1;
+      transform.signY = signY;
+    }
+  }
+  const oldScaleX = target.scaleX,
+    oldScaleY = target.scaleY;
+  !isLocked(target, 'lockScalingX') && target.set(SCALE_X, scaleX);
+  !isLocked(target, 'lockScalingY') && target.set(SCALE_Y, scaleY);
   return oldScaleX !== target.scaleX || oldScaleY !== target.scaleY;
 }
 
@@ -251,7 +432,10 @@ const scaleObjectX: TransformActionHandler<ScaleTransform> = (
   x,
   y,
 ) => {
-  return scaleObject(eventData, transform, x, y, { by: 'x' });
+  const target = transform.target as never as FabricObject;
+  return target.lockSize
+    ? scaleObjectByX(eventData, transform, x, y, { by: 'x' })
+    : scaleObject(eventData, transform, x, y, { by: 'x' });
 };
 
 /**
@@ -269,7 +453,10 @@ const scaleObjectY: TransformActionHandler<ScaleTransform> = (
   x,
   y,
 ) => {
-  return scaleObject(eventData, transform, x, y, { by: 'y' });
+  const target = transform.target as never as FabricObject;
+  return target.lockSize
+    ? scaleObjectByY(eventData, transform, x, y, { by: 'y' })
+    : scaleObject(eventData, transform, x, y, { by: 'y' });
 };
 
 export const scalingEqually = wrapWithFireEvent(

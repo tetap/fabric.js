@@ -37,7 +37,8 @@ import { log } from '../util/internals/console';
 export type ImageSource =
   | HTMLImageElement
   | HTMLVideoElement
-  | HTMLCanvasElement;
+  | HTMLCanvasElement
+  | OffscreenCanvas;
 
 interface UniqueImageProps {
   srcFromAttribute: boolean;
@@ -267,7 +268,7 @@ export class FabricImage<
       ['_originalElement', '_element', '_filteredEl', '_cacheCanvas'] as const
     ).forEach((elementKey) => {
       const el = this[elementKey];
-      el && getEnv().dispose(el);
+      el && !(el instanceof OffscreenCanvas) && getEnv().dispose(el);
       // @ts-expect-error disposing
       this[elementKey] = undefined;
     });
@@ -434,7 +435,7 @@ export class FabricImage<
   getSrc(filtered?: boolean): string {
     const element = filtered ? this._element : this._originalElement;
     if (element) {
-      if ((element as HTMLCanvasElement).toDataURL) {
+      if ((element as HTMLCanvasElement).toDataURL || element instanceof OffscreenCanvas) {
         return (element as HTMLCanvasElement).toDataURL();
       }
 

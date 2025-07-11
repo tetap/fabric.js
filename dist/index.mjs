@@ -24403,7 +24403,7 @@ class FabricImage extends FabricObject {
     this._cacheContext = null;
     ['_originalElement', '_element', '_filteredEl', '_cacheCanvas'].forEach(elementKey => {
       const el = this[elementKey];
-      el && getEnv().dispose(el);
+      el && !(el instanceof OffscreenCanvas) && getEnv().dispose(el);
       // @ts-expect-error disposing
       this[elementKey] = undefined;
     });
@@ -24534,7 +24534,7 @@ class FabricImage extends FabricObject {
   getSrc(filtered) {
     const element = filtered ? this._element : this._originalElement;
     if (element) {
-      if (element.toDataURL) {
+      if (element.toDataURL || element instanceof OffscreenCanvas) {
         return element.toDataURL();
       }
       if (this.srcFromAttribute) {

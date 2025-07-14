@@ -10,6 +10,7 @@ import {
 import type { TClassProperties } from '../typedefs';
 import { log } from '../util/internals/console';
 import { ActiveSelectionLayoutManager } from '../LayoutManager/ActiveSelectionLayoutManager';
+import { uid } from '../util/internals/uid';
 
 export type MultiSelectionStacking = 'canvas-stacking' | 'selection-order';
 
@@ -56,6 +57,10 @@ export class ActiveSelection extends Group {
    * @default `canvas-stacking`
    */
   declare multiSelectionStacking: MultiSelectionStacking;
+
+  lockSize = true;
+
+  id = uid().toString();
 
   constructor(
     objects: FabricObject[] = [],

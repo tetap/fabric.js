@@ -188,3 +188,5 @@ export * from './src/util/misc/matrix';
 export * from './src/util/transform_matrix_removal';
 export * from './src/util/applyMixins';
 export * from './src/util/misc/objectTransforms';
+export * from './src/util/typeAssertions';
+export type { ObjectProps } from './src/shapes/Object/types/ObjectProps';

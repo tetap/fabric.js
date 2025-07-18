@@ -170,7 +170,7 @@ export interface TPointerEventInfo<E extends TPointerEvent = TPointerEvent>
   viewportPoint: Point;
 }
 
-interface SimpleEventHandler<T extends Event = TPointerEvent>
+export interface SimpleEventHandler<T extends Event = TPointerEvent>
   extends TEvent<T> {
   target?: FabricObject;
   subTargets: FabricObject[];

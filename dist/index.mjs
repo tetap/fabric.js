@@ -7312,7 +7312,8 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
   _setStrokeStyles(ctx, decl) {
     const stroke = decl.stroke;
     if (stroke) {
-      ctx.lineWidth = decl.strokeWidth;
+      var _this$canvas$getZoom, _this$canvas;
+      ctx.lineWidth = 1 / ((_this$canvas$getZoom = (_this$canvas = this.canvas) === null || _this$canvas === void 0 ? void 0 : _this$canvas.getZoom()) !== null && _this$canvas$getZoom !== void 0 ? _this$canvas$getZoom : 1);
       ctx.lineCap = decl.strokeLineCap;
       ctx.lineDashOffset = decl.strokeDashOffset;
       ctx.lineJoin = decl.strokeLineJoin;
@@ -7477,7 +7478,7 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
    * @param {CanvasRenderingContext2D} ctx Context to render on
    */
   _renderStroke(ctx) {
-    if (!this.stroke || this.strokeWidth === 0) {
+    if (!this.stroke) {
       return;
     }
     if (this.shadow && !this.shadow.affectStroke) {

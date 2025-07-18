@@ -987,7 +987,7 @@ export class FabricObject<
   ) {
     const stroke = decl.stroke;
     if (stroke) {
-      ctx.lineWidth = decl.strokeWidth;
+      ctx.lineWidth = 1 / (this.canvas?.getZoom() ?? 1);
       ctx.lineCap = decl.strokeLineCap;
       ctx.lineDashOffset = decl.strokeDashOffset;
       ctx.lineJoin = decl.strokeLineJoin;
@@ -1163,7 +1163,7 @@ export class FabricObject<
    * @param {CanvasRenderingContext2D} ctx Context to render on
    */
   _renderStroke(ctx: CanvasRenderingContext2D) {
-    if (!this.stroke || this.strokeWidth === 0) {
+    if (!this.stroke) {
       return;
     }
 

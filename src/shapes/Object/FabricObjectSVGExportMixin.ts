@@ -37,11 +37,10 @@ export class FabricObjectSVGExportMixin {
       filter = skipShadow ? '' : this.getSvgFilter(),
       fill = colorPropToSVG(FILL, this.fill),
       stroke = colorPropToSVG(STROKE, this.stroke);
-
     return [
       stroke,
       'stroke-width: ',
-      strokeWidth,
+      stroke.includes('none') ? 0 : 1,
       '; ',
       'stroke-dasharray: ',
       strokeDashArray,

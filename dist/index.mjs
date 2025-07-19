@@ -4689,9 +4689,9 @@ class FabricObjectSVGExportMixin {
    * @return {String}
    */
   getSvgStyles(skipShadow) {
-    const fillRule = this.fillRule ? this.fillRule : 'nonzero',
-      strokeWidth = this.strokeWidth ? this.strokeWidth : '0',
-      strokeDashArray = this.strokeDashArray ? this.strokeDashArray.join(' ') : NONE,
+    const fillRule = this.fillRule ? this.fillRule : 'nonzero';
+      this.strokeWidth ? this.strokeWidth : '0';
+      const strokeDashArray = this.strokeDashArray ? this.strokeDashArray.join(' ') : NONE,
       strokeDashOffset = this.strokeDashOffset ? this.strokeDashOffset : '0',
       strokeLineCap = this.strokeLineCap ? this.strokeLineCap : 'butt',
       strokeLineJoin = this.strokeLineJoin ? this.strokeLineJoin : 'miter',
@@ -4701,7 +4701,7 @@ class FabricObjectSVGExportMixin {
       filter = skipShadow ? '' : this.getSvgFilter(),
       fill = colorPropToSVG(FILL, this.fill),
       stroke = colorPropToSVG(STROKE, this.stroke);
-    return [stroke, 'stroke-width: ', strokeWidth, '; ', 'stroke-dasharray: ', strokeDashArray, '; ', 'stroke-linecap: ', strokeLineCap, '; ', 'stroke-dashoffset: ', strokeDashOffset, '; ', 'stroke-linejoin: ', strokeLineJoin, '; ', 'stroke-miterlimit: ', strokeMiterLimit, '; ', fill, 'fill-rule: ', fillRule, '; ', 'opacity: ', opacity, ';', filter, visibility].join('');
+    return [stroke, 'stroke-width: ', stroke.includes('none') ? 0 : 1, '; ', 'stroke-dasharray: ', strokeDashArray, '; ', 'stroke-linecap: ', strokeLineCap, '; ', 'stroke-dashoffset: ', strokeDashOffset, '; ', 'stroke-linejoin: ', strokeLineJoin, '; ', 'stroke-miterlimit: ', strokeMiterLimit, '; ', fill, 'fill-rule: ', fillRule, '; ', 'opacity: ', opacity, ';', filter, visibility].join('');
   }
 
   /**

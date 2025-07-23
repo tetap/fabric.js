@@ -1172,10 +1172,10 @@ export class FabricObject<
     }
 
     ctx.save();
-    if (this.strokeUniform) {
-      const scaling = this.getObjectScaling();
-      ctx.scale(1 / scaling.x, 1 / scaling.y);
-    }
+    // if (this.strokeUniform) {
+    //   const scaling = this.getObjectScaling();
+    //   ctx.scale(1 / scaling.x, 1 / scaling.y);
+    // }
     this._setLineDash(ctx, this.strokeDashArray);
     this._setStrokeStyles(ctx, this);
     ctx.stroke();

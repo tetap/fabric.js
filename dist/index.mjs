@@ -7485,10 +7485,10 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
       this._removeShadow(ctx);
     }
     ctx.save();
-    if (this.strokeUniform) {
-      const scaling = this.getObjectScaling();
-      ctx.scale(1 / scaling.x, 1 / scaling.y);
-    }
+    // if (this.strokeUniform) {
+    //   const scaling = this.getObjectScaling();
+    //   ctx.scale(1 / scaling.x, 1 / scaling.y);
+    // }
     this._setLineDash(ctx, this.strokeDashArray);
     this._setStrokeStyles(ctx, this);
     ctx.stroke();
@@ -19605,7 +19605,7 @@ class FabricText extends StyledText {
    * @param {CanvasRenderingContext2D} ctx Context to render on
    */
   _renderTextStroke(ctx) {
-    if ((!this.stroke || this.strokeWidth === 0) && this.isEmptyStyles()) {
+    if (!this.stroke && this.isEmptyStyles()) {
       return;
     }
     if (this.shadow && !this.shadow.affectStroke) {
@@ -19773,11 +19773,12 @@ class FabricText extends StyledText {
    * @returns
    */
   _setStrokeStyles(ctx, _ref) {
+    var _this$canvas$getZoom, _this$canvas;
     let {
       stroke,
       strokeWidth
     } = _ref;
-    ctx.lineWidth = strokeWidth;
+    ctx.lineWidth = 1 / ((_this$canvas$getZoom = (_this$canvas = this.canvas) === null || _this$canvas === void 0 ? void 0 : _this$canvas.getZoom()) !== null && _this$canvas$getZoom !== void 0 ? _this$canvas$getZoom : 1);
     ctx.lineCap = this.strokeLineCap;
     ctx.lineDashOffset = this.strokeDashOffset;
     ctx.lineJoin = this.strokeLineJoin;

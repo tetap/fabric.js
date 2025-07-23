@@ -1129,7 +1129,7 @@ export class FabricText<
    * @param {CanvasRenderingContext2D} ctx Context to render on
    */
   _renderTextStroke(ctx: CanvasRenderingContext2D) {
-    if ((!this.stroke || this.strokeWidth === 0) && this.isEmptyStyles()) {
+    if ((!this.stroke) && this.isEmptyStyles()) {
       return;
     }
 
@@ -1338,7 +1338,7 @@ export class FabricText<
       strokeWidth,
     }: Pick<CompleteTextStyleDeclaration, 'stroke' | 'strokeWidth'>,
   ) {
-    ctx.lineWidth = strokeWidth;
+    ctx.lineWidth = 1 / (this.canvas?.getZoom() ?? 1);
     ctx.lineCap = this.strokeLineCap;
     ctx.lineDashOffset = this.strokeDashOffset;
     ctx.lineJoin = this.strokeLineJoin;

@@ -7313,7 +7313,7 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
     const stroke = decl.stroke;
     if (stroke) {
       var _this$canvas$getZoom, _this$canvas;
-      ctx.lineWidth = 1 / ((_this$canvas$getZoom = (_this$canvas = this.canvas) === null || _this$canvas === void 0 ? void 0 : _this$canvas.getZoom()) !== null && _this$canvas$getZoom !== void 0 ? _this$canvas$getZoom : 1);
+      ctx.lineWidth = 1 / ((_this$canvas$getZoom = (_this$canvas = this.canvas) === null || _this$canvas === void 0 ? void 0 : _this$canvas.getZoom()) !== null && _this$canvas$getZoom !== void 0 ? _this$canvas$getZoom : 1) / (Math.min(this.scaleX, this.scaleY) || 1);
       ctx.lineCap = decl.strokeLineCap;
       ctx.lineDashOffset = decl.strokeDashOffset;
       ctx.lineJoin = decl.strokeLineJoin;
@@ -19778,7 +19778,7 @@ class FabricText extends StyledText {
       stroke,
       strokeWidth
     } = _ref;
-    ctx.lineWidth = 1 / ((_this$canvas$getZoom = (_this$canvas = this.canvas) === null || _this$canvas === void 0 ? void 0 : _this$canvas.getZoom()) !== null && _this$canvas$getZoom !== void 0 ? _this$canvas$getZoom : 1);
+    ctx.lineWidth = 1 / ((_this$canvas$getZoom = (_this$canvas = this.canvas) === null || _this$canvas === void 0 ? void 0 : _this$canvas.getZoom()) !== null && _this$canvas$getZoom !== void 0 ? _this$canvas$getZoom : 1) / (Math.min(this.scaleX, this.scaleY) || 1);
     ctx.lineCap = this.strokeLineCap;
     ctx.lineDashOffset = this.strokeDashOffset;
     ctx.lineJoin = this.strokeLineJoin;

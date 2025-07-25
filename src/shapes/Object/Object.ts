@@ -987,7 +987,10 @@ export class FabricObject<
   ) {
     const stroke = decl.stroke;
     if (stroke) {
-      ctx.lineWidth = 1 / (this.canvas?.getZoom() ?? 1);
+      ctx.lineWidth =
+        1 /
+        (this.canvas?.getZoom() ?? 1) /
+        (Math.min(this.scaleX, this.scaleY) || 1);
       ctx.lineCap = decl.strokeLineCap;
       ctx.lineDashOffset = decl.strokeDashOffset;
       ctx.lineJoin = decl.strokeLineJoin;

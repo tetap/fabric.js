@@ -134,7 +134,6 @@ export class FabricImage<
    * key used to retrieve the texture representing this image
    * @since 2.0.0
    * @type String
-   * @default
    */
   declare cacheKey: string;
 
@@ -142,7 +141,6 @@ export class FabricImage<
    * Image crop in pixels from original image size.
    * @since 2.0.0
    * @type Number
-   * @default
    */
   declare cropX: number;
 
@@ -150,7 +148,6 @@ export class FabricImage<
    * Image crop in pixels from original image size.
    * @since 2.0.0
    * @type Number
-   * @default
    */
   declare cropY: number;
 
@@ -159,7 +156,6 @@ export class FabricImage<
    * Also influence if the cacheCanvas for this image uses imageSmoothing
    * @since 4.0.0-beta.11
    * @type Boolean
-   * @default
    */
   declare imageSmoothing: boolean;
 
@@ -760,7 +756,6 @@ export class FabricImage<
 
   /**
    * List of attribute names to account for when parsing SVG element (used by {@link FabricImage.fromElement})
-   * @static
    * @see {@link http://www.w3.org/TR/SVG/struct.html#ImageElement}
    */
   static ATTRIBUTE_NAMES = [
@@ -778,7 +773,6 @@ export class FabricImage<
 
   /**
    * Creates an instance of FabricImage from its object representation
-   * @static
    * @param {Object} object Object to create an instance from
    * @param {object} [options] Options object
    * @param {AbortSignal} [options.signal] handle aborting, see https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal
@@ -808,7 +802,6 @@ export class FabricImage<
 
   /**
    * Creates an instance of Image from an URL string
-   * @static
    * @param {String} url URL to create an image from
    * @param {LoadImageOptions} [options] Options object
    * @returns {Promise<FabricImage>}
@@ -825,7 +818,6 @@ export class FabricImage<
 
   /**
    * Returns {@link FabricImage} instance from an SVG element
-   * @static
    * @param {HTMLElement} element Element to parse
    * @param {Object} [options] Options object
    * @param {AbortSignal} [options.signal] handle aborting, see https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal

@@ -52,21 +52,18 @@ class BaseConfiguration {
      * Pixel limit for cache canvases. 1Mpx , 4Mpx should be fine.
      * @since 1.7.14
      * @type Number
-     * @default
      */
     _defineProperty(this, "perfLimitSizeTotal", 2097152);
     /**
      * Pixel limit for cache canvases width or height. IE fixes the maximum at 5000
      * @since 1.7.14
      * @type Number
-     * @default
      */
     _defineProperty(this, "maxCacheSideLimit", 4096);
     /**
      * Lowest pixel limit for cache canvases, set at 256PX
      * @since 1.7.14
      * @type Number
-     * @default
      */
     _defineProperty(this, "minCacheSideLimit", 256);
     /**
@@ -74,7 +71,6 @@ class BaseConfiguration {
      * pasted text use destination style.
      * Defaults to 'false'.
      * @type Boolean
-     * @default
      * @deprecated
      */
     _defineProperty(this, "disableStyleCopyPaste", false);
@@ -84,7 +80,6 @@ class BaseConfiguration {
      * time since a default 2048x2048 canvas will be created for the gl context
      * @since 2.0.0
      * @type Boolean
-     * @default
      */
     _defineProperty(this, "enableGLFiltering", true);
     /**
@@ -95,7 +90,6 @@ class BaseConfiguration {
      *
      * @since 2.0.0
      * @type Number
-     * @default
      */
     _defineProperty(this, "textureSize", 4096);
     /**
@@ -1056,8 +1050,6 @@ class Point {
 
   /**
    * Rotates `point` around `origin` with `radians`
-   * @static
-   * @memberOf fabric.util
    * @param {XY} origin The origin of the rotation
    * @param {TRadian} radians The radians of the angle for the rotation
    * @return {Point} The new rotated point
@@ -1075,8 +1067,6 @@ class Point {
 
   /**
    * Apply transform t to point p
-   * @static
-   * @memberOf fabric.util
    * @param  {TMat2D} t The transform
    * @param  {Boolean} [ignoreOffset] Indicates that the offset should not be applied
    * @return {Point} The transformed point
@@ -4410,7 +4400,6 @@ class Color {
 
   /**
    * Returns new color object, when given a color in RGB format
-   * @memberOf Color
    * @param {String} color Color value ex: rgb(0-255,0-255,0-255)
    * @return {Color}
    */
@@ -4420,9 +4409,7 @@ class Color {
 
   /**
    * Returns new color object, when given a color in RGBA format
-   * @static
    * @function
-   * @memberOf Color
    * @param {String} color
    * @return {Color}
    */
@@ -4432,7 +4419,6 @@ class Color {
 
   /**
    * Returns array representation (ex: [100, 100, 200, 1]) of a color that's in RGB or RGBA format
-   * @memberOf Color
    * @param {String} color Color value ex: rgb(0-255,0-255,0-255), rgb(0%-100%,0%-100%,0%-100%)
    * @return {TRGBAColorSource | undefined} source
    */
@@ -4450,7 +4436,6 @@ class Color {
   /**
    * Returns new color object, when given a color in HSL format
    * @param {String} color Color value ex: hsl(0-260,0%-100%,0%-100%)
-   * @memberOf Color
    * @return {Color}
    */
   static fromHsl(color) {
@@ -4459,9 +4444,7 @@ class Color {
 
   /**
    * Returns new color object, when given a color in HSLA format
-   * @static
    * @function
-   * @memberOf Color
    * @param {String} color
    * @return {Color}
    */
@@ -4472,7 +4455,6 @@ class Color {
   /**
    * Returns array representation (ex: [100, 100, 200, 1]) of a color that's in HSL or HSLA format.
    * Adapted from <a href="https://rawgithub.com/mjijackson/mjijackson.github.com/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.html">https://github.com/mjijackson</a>
-   * @memberOf Color
    * @param {String} color Color value ex: hsl(0-360,0%-100%,0%-100%) or hsla(0-360,0%-100%,0%-100%, 0-1)
    * @return {TRGBAColorSource | undefined} source
    * @see http://http://www.w3.org/TR/css3-color/#hsl-color
@@ -4501,8 +4483,6 @@ class Color {
 
   /**
    * Returns new color object, when given a color in HEX format
-   * @static
-   * @memberOf Color
    * @param {String} color Color value ex: FF5555
    * @return {Color}
    */
@@ -4512,8 +4492,6 @@ class Color {
 
   /**
    * Returns array representation (ex: [100, 100, 200, 1]) of a color that's in HEX format
-   * @static
-   * @memberOf Color
    * @param {String} color ex: FF5555 or FF5544CC (RGBa)
    * @return {TRGBAColorSource | undefined} source
    */
@@ -4535,8 +4513,6 @@ class Color {
   /**
    * Converts a string that could be any angle notation (50deg, 0.5turn, 2rad)
    * into degrees without the 'deg' suffix
-   * @static
-   * @memberOf Color
    * @param {String} value ex: 0deg, 0.5turn, 2rad
    * @return {Number} number in degrees or NaN if inputs are invalid
    */
@@ -5069,7 +5045,6 @@ class Shadow {
 /**
  * Shadow color
  * @type String
- * @default
  */
 /**
  * Shadow blur
@@ -5078,29 +5053,24 @@ class Shadow {
 /**
  * Shadow horizontal offset
  * @type Number
- * @default
  */
 /**
  * Shadow vertical offset
  * @type Number
- * @default
  */
 /**
  * Whether the shadow should affect stroke operations
  * @type Boolean
- * @default
  */
 /**
  * Indicates whether toObject should include default values
  * @type Boolean
- * @default
  */
 /**
  * When `false`, the shadow will scale with the object.
  * When `true`, the shadow's offsetX, offsetY, and blur will not be affected by the object's scale.
  * default to false
  * @type Boolean
- * @default
  */
 _defineProperty(Shadow, "ownDefaults", shadowDefaultValues);
 _defineProperty(Shadow, "type", 'shadow');
@@ -5874,7 +5844,6 @@ class Intersection {
    * Checks if a line intersects another
    * @see {@link https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection line intersection}
    * @see {@link https://en.wikipedia.org/wiki/Cramer%27s_rule Cramer's rule}
-   * @static
    * @param {Point} a1
    * @param {Point} a2
    * @param {Point} b1
@@ -5916,7 +5885,6 @@ class Intersection {
   /**
    * Checks if a segment intersects a line
    * @see {@link intersectLineLine} for line intersection
-   * @static
    * @param {Point} s1 boundary point of segment
    * @param {Point} s2 other boundary point of segment
    * @param {Point} l1 point on line
@@ -5930,7 +5898,6 @@ class Intersection {
   /**
    * Checks if a segment intersects another
    * @see {@link intersectLineLine} for line intersection
-   * @static
    * @param {Point} a1 boundary point of segment
    * @param {Point} a2 other boundary point of segment
    * @param {Point} b1 boundary point of segment
@@ -5946,7 +5913,6 @@ class Intersection {
    *
    * @todo account for stroke
    *
-   * @static
    * @see {@link intersectSegmentPolygon} for segment intersection
    * @param {Point} a1 point on line
    * @param {Point} a2 other point on line
@@ -5975,7 +5941,6 @@ class Intersection {
 
   /**
    * Checks if segment intersects polygon
-   * @static
    * @see {@link intersectLinePolygon} for line intersection
    * @param {Point} a1 boundary point of segment
    * @param {Point} a2 other boundary point of segment
@@ -5991,7 +5956,6 @@ class Intersection {
    *
    * @todo account for stroke
    *
-   * @static
    * @param {Point[]} points1
    * @param {Point[]} points2
    * @return {Intersection}
@@ -6021,7 +5985,6 @@ class Intersection {
 
   /**
    * Checks if polygon intersects rectangle
-   * @static
    * @see {@link intersectPolygonPolygon} for polygon intersection
    * @param {Point[]} points polygon points
    * @param {Point} r1 top left point of rect
@@ -6780,15 +6743,9 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
    * and each side do not cross fabric.cacheSideLimit
    * those numbers are configurable so that you can get as much detail as you want
    * making bargain with performances.
-   * @param {Object} dims
-   * @param {Object} dims.width width of canvas
-   * @param {Object} dims.height height of canvas
-   * @param {Object} dims.zoomX zoomX zoom value to unscale the canvas before drawing cache
-   * @param {Object} dims.zoomY zoomY zoom value to unscale the canvas before drawing cache
-   * @return {Object}.width width of canvas
-   * @return {Object}.height height of canvas
-   * @return {Object}.zoomX zoomX zoom value to unscale the canvas before drawing cache
-   * @return {Object}.zoomY zoomY zoom value to unscale the canvas before drawing cache
+   * It mutates the input object dims.
+   * @param {TCacheCanvasDimensions} dims
+   * @return {TCacheCanvasDimensions} dims
    */
   _limitCacheSize(dims) {
     const width = dims.width,
@@ -6825,12 +6782,7 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
    * Return the dimension and the zoom level needed to create a cache canvas
    * big enough to host the object to be cached.
    * @private
-   * @return {Object}.x width of object to be cached
-   * @return {Object}.y height of object to be cached
-   * @return {Object}.width width of canvas
-   * @return {Object}.height height of canvas
-   * @return {Object}.zoomX zoomX zoom value to unscale the canvas before drawing cache
-   * @return {Object}.zoomY zoomY zoom value to unscale the canvas before drawing cache
+   * @return {TCacheCanvasDimensions} Informations about the object to be cached
    */
   _getCacheCanvasDimensions() {
     const objectScale = this.getTotalObjectScaling(),
@@ -7016,10 +6968,8 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
     return this;
   }
 
-  /*
-   * @private
+  /**
    * return if the object would be visible in rendering
-   * @memberOf FabricObject.prototype
    * @return {Boolean}
    */
   isNotVisible() {
@@ -7693,9 +7643,18 @@ let FabricObject$1 = class FabricObject extends ObjectGeometry {
   }
 
   /**
-   * Returns true if any of the specified types is identical to the type of an instance
-   * @param {String} type Type to check against
-   * @return {Boolean}
+   * Checks if the instance is of any of the specified types.
+   * We use this to filter a list of objects for the `getObjects` function.
+   *
+   * For detecting an instance type `instanceOf` is a better check,
+   * but to avoid to make specific classes a dependency of generic code
+   * internally we use this.
+   *
+   * This compares both the static class `type` and the instance's own `type` property
+   * against the provided list of types.
+   *
+   * @param types - A list of type strings to check against.
+   * @returns `true` if the object's type or class type matches any in the list, otherwise `false`.
    */
   isType() {
     for (var _len = arguments.length, types = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -10535,7 +10494,6 @@ const reTransformAll = new RegExp(transform, 'g');
  * Parses "transform" attribute, returning an array of values
  * @static
  * @function
- * @memberOf fabric
  * @param {String} attributeValue String containing attribute value
  * @return {TTransformMatrix} Array of 6 elements representing transformation matrix
  */
@@ -10653,7 +10611,6 @@ function normalizeValue(attr, value, parentAttributes, fontSize) {
  * Parses a short font declaration, building adding its properties to a style object
  * @static
  * @function
- * @memberOf fabric
  * @param {String} value font declaration
  * @param {Object} oStyle definition
  */
@@ -10719,7 +10676,6 @@ function parseStyleString(style, oStyle) {
 /**
  * Parses "style" attribute, retuning an object with values
  * @static
- * @memberOf fabric
  * @param {SVGElement} element Element to parse
  * @return {Object} Objects with values parsed from style attribute of an element
  */
@@ -10924,8 +10880,6 @@ class Rect extends FabricObject {
 
   /**
    * List of attribute names to account for when parsing SVG element (used by `Rect.fromElement`)
-   * @static
-   * @memberOf Rect
    * @see: http://www.w3.org/TR/SVG/shapes.html#RectElement
    */
 
@@ -10933,8 +10887,6 @@ class Rect extends FabricObject {
 
   /**
    * Returns {@link Rect} instance from an SVG element
-   * @static
-   * @memberOf Rect
    * @param {HTMLElement} element Element to parse
    * @param {Object} [options] Options object
    */
@@ -10963,12 +10915,10 @@ class Rect extends FabricObject {
 /**
  * Horizontal border radius
  * @type Number
- * @default
  */
 /**
  * Vertical border radius
  * @type Number
- * @default
  */
 _defineProperty(Rect, "type", 'Rect');
 _defineProperty(Rect, "cacheProperties", [...cacheProperties, ...RECT_PROPS]);
@@ -11408,7 +11358,6 @@ class Group extends createCollectionMixin(FabricObject) {
     /**
      * Used to optimize performance
      * set to `false` if you don't need contained objects to be targets of events
-     * @default
      * @type boolean
      */
     /**
@@ -11419,7 +11368,6 @@ class Group extends createCollectionMixin(FabricObject) {
      * that will take care of enabling subTargetCheck and necessary object events.
      * There is too much attached to group interactivity to just be evaluated by a
      * boolean in the code
-     * @default
      * @deprecated
      * @type boolean
      */
@@ -11917,8 +11865,6 @@ class Group extends createCollectionMixin(FabricObject) {
   /**
    * @todo support loading from svg
    * @private
-   * @static
-   * @memberOf Group
    * @param {Object} object Object to create a group from
    * @returns {Promise<Group>}
    */
@@ -12863,7 +12809,6 @@ const joinPath = (pathData, fractionDigits) => pathData.map(segment => {
  * **(2)** one is inverted and the other isn't - the wrapper shouldn't become inverted and the inverted clip path must clip the non inverted one to produce an identical visual effect.\
  * **(3)** both clip paths are not inverted - wrapper and clip paths remain unchanged.
  *
- * @memberOf fabric.util
  * @param {fabric.Object} c1
  * @param {fabric.Object} c2
  * @returns {fabric.Object} merged clip path
@@ -12898,50 +12843,6 @@ const mergeClipPaths = (c1, c2) => {
  * @return {Number} random value (between min and max)
  */
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-/**
- * Cross-browser abstraction for sending XMLHttpRequest
- * @deprecated this has to go away, we can use a modern browser method to do the same.
- * @param {String} url URL to send XMLHttpRequest to
- * @param {Object} [options] Options object
- * @param {AbortSignal} [options.signal] handle aborting, see https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal
- * @param {Function} options.onComplete Callback to invoke when request is completed
- * @return {XMLHttpRequest} request
- */
-
-function request(url) {
-  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const onComplete = options.onComplete || noop,
-    xhr = new (getFabricWindow().XMLHttpRequest)(),
-    signal = options.signal,
-    abort = function () {
-      xhr.abort();
-    },
-    removeListener = function () {
-      signal && signal.removeEventListener('abort', abort);
-      xhr.onerror = xhr.ontimeout = noop;
-    };
-  if (signal && signal.aborted) {
-    throw new SignalAbortedError('request');
-  } else if (signal) {
-    signal.addEventListener('abort', abort, {
-      once: true
-    });
-  }
-
-  /** @ignore */
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      removeListener();
-      onComplete(xhr);
-      xhr.onreadystatechange = noop;
-    }
-  };
-  xhr.onerror = xhr.ontimeout = removeListener;
-  xhr.open('get', url, true);
-  xhr.send();
-  return xhr;
-}
 
 /**
  * This function is an helper for svg import. it decompose the transformMatrix
@@ -13060,7 +12961,6 @@ var index$1 = /*#__PURE__*/Object.freeze({
   removeFromArray: removeFromArray,
   removeTransformFromObject: removeTransformFromObject,
   removeTransformMatrixForSvgParsing: removeTransformMatrixForSvgParsing,
-  request: request,
   requestAnimFrame: requestAnimFrame,
   resetObjectTransform: resetObjectTransform,
   rotateVector: rotateVector,
@@ -13350,7 +13250,6 @@ class SelectableCanvas extends StaticCanvas {
      * and then mouseup finalizes it and adds an instance of `fabric.Path` onto canvas.
      * @tutorial {@link http://fabricjs.com/fabric-intro-part-4#free_drawing}
      * @type Boolean
-     * @default
      */
     // event config
     /**
@@ -16078,8 +15977,6 @@ class Gradient {
   /* _FROM_SVG_START_ */
   /**
    * Returns {@link Gradient} instance from an SVG element
-   * @static
-   * @memberOf Gradient
    * @param {SVGGradientElement} el SVG gradient element
    * @param {FabricObject} instance
    * @param {String} opacity A fill-opacity or stroke-opacity attribute to multiply to each stop's opacity.
@@ -16227,7 +16124,6 @@ class Pattern {
    * transform matrix to change the pattern, imported from svgs.
    * @todo verify if using the identity matrix as default makes the rest of the code more easy
    * @type Array
-   * @default
    */
 
   /**
@@ -16254,18 +16150,15 @@ class Pattern {
     /**
      * Pattern horizontal offset from object's left/top corner
      * @type Number
-     * @default
      */
     _defineProperty(this, "offsetX", 0);
     /**
      * Pattern vertical offset from object's left/top corner
      * @type Number
-     * @default
      */
     _defineProperty(this, "offsetY", 0);
     /**
      * @type TCrossOrigin
-     * @default
      */
     _defineProperty(this, "crossOrigin", '');
     this.id = uid();
@@ -16385,13 +16278,11 @@ class BaseBrush {
     /**
      * Color of a brush
      * @type String
-     * @default
      */
     _defineProperty(this, "color", 'rgb(0, 0, 0)');
     /**
      * Width of a brush, has to be a Number, no string literals
      * @type Number
-     * @default
      */
     _defineProperty(this, "width", 1);
     /**
@@ -16399,31 +16290,26 @@ class BaseBrush {
      * <b>Backwards incompatibility note:</b> This property replaces "shadowColor" (String), "shadowOffsetX" (Number),
      * "shadowOffsetY" (Number) and "shadowBlur" (Number) since v1.2.12
      * @type Shadow
-     * @default
      */
     _defineProperty(this, "shadow", null);
     /**
      * Line endings style of a brush (one of "butt", "round", "square")
      * @type String
-     * @default
      */
     _defineProperty(this, "strokeLineCap", 'round');
     /**
      * Corner style of a brush (one of "bevel", "round", "miter")
      * @type String
-     * @default
      */
     _defineProperty(this, "strokeLineJoin", 'round');
     /**
      * Maximum miter length (used for strokeLineJoin = "miter") of a brush's
      * @type Number
-     * @default
      */
     _defineProperty(this, "strokeMiterLimit", 10);
     /**
      * Stroke Dash Array.
      * @type Array
-     * @default
      */
     _defineProperty(this, "strokeDashArray", null);
     /**
@@ -16764,15 +16650,11 @@ class Path extends FabricObject {
 
   /**
    * List of attribute names to account for when parsing SVG element (used by `Path.fromElement`)
-   * @static
-   * @memberOf Path
    * @see http://www.w3.org/TR/SVG/paths.html#PathElement
    */
 
   /**
    * Creates an instance of Path from an object
-   * @static
-   * @memberOf Path
    * @param {Object} object
    * @returns {Promise<Path>}
    */
@@ -16784,8 +16666,6 @@ class Path extends FabricObject {
 
   /**
    * Creates an instance of Path from an SVG <path> element
-   * @static
-   * @memberOf Path
    * @param {HTMLElement} element to parse
    * @param {Partial<PathProps>} [options] Options object
    */
@@ -16806,7 +16686,6 @@ class Path extends FabricObject {
 /**
  * Array of path points
  * @type Array
- * @default
  */
 _defineProperty(Path, "type", 'Path');
 _defineProperty(Path, "cacheProperties", [...cacheProperties, 'path', 'fillRule']);
@@ -17217,15 +17096,11 @@ class Circle extends FabricObject {
   /* _FROM_SVG_START_ */
   /**
    * List of attribute names to account for when parsing SVG element (used by {@link Circle.fromElement})
-   * @static
-   * @memberOf Circle
    * @see: http://www.w3.org/TR/SVG/shapes.html#CircleElement
    */
 
   /**
    * Returns {@link Circle} instance from an SVG element
-   * @static
-   * @memberOf Circle
    * @param {HTMLElement} element Element to parse
    * @param {Object} [options] Partial Circle object to default missing properties on the element.
    * @throws {Error} If value of `r` attribute is missing or invalid
@@ -17270,7 +17145,6 @@ class CircleBrush extends BaseBrush {
     /**
      * Width of a brush
      * @type Number
-     * @default
      */
     _defineProperty(this, "width", 10);
     this.points = [];
@@ -17420,37 +17294,31 @@ class SprayBrush extends BaseBrush {
     /**
      * Width of a spray
      * @type Number
-     * @default
      */
     _defineProperty(this, "width", 10);
     /**
      * Density of a spray (number of dots per chunk)
      * @type Number
-     * @default
      */
     _defineProperty(this, "density", 20);
     /**
      * Width of spray dots
      * @type Number
-     * @default
      */
     _defineProperty(this, "dotWidth", 1);
     /**
      * Width variance of spray dots
      * @type Number
-     * @default
      */
     _defineProperty(this, "dotWidthVariance", 1);
     /**
      * Whether opacity of a dot should be random
      * @type Boolean
-     * @default
      */
     _defineProperty(this, "randomOpacity", false);
     /**
      * Whether overlapping dots (rectangles) should be removed (for performance reasons)
      * @type Boolean
-     * @default
      */
     _defineProperty(this, "optimizeOverlapping", true);
     this.sprayChunks = [];
@@ -17819,15 +17687,11 @@ class Line extends FabricObject {
 
   /**
    * List of attribute names to account for when parsing SVG element (used by {@link Line.fromElement})
-   * @static
-   * @memberOf Line
    * @see http://www.w3.org/TR/SVG/shapes.html#LineElement
    */
 
   /**
    * Returns Line instance from an SVG element
-   * @static
-   * @memberOf Line
    * @param {HTMLElement} element Element to parse
    * @param {Object} [options] Options object
    * @param {Function} [callback] callback function invoked after parsing
@@ -17847,8 +17711,6 @@ class Line extends FabricObject {
 
   /**
    * Returns Line instance from an object representation
-   * @static
-   * @memberOf Line
    * @param {Object} object Object to create an instance from
    * @returns {Promise<Line>}
    */
@@ -17871,22 +17733,18 @@ class Line extends FabricObject {
 /**
  * x value or first line edge
  * @type number
- * @default
  */
 /**
  * y value or first line edge
  * @type number
- * @default
  */
 /**
  * x value or second line edge
  * @type number
- * @default
  */
 /**
  * y value or second line edge
  * @type number
- * @default
  */
 _defineProperty(Line, "type", 'Line');
 _defineProperty(Line, "cacheProperties", [...cacheProperties, ...coordProps]);
@@ -18044,15 +17902,11 @@ class Ellipse extends FabricObject {
 
   /**
    * List of attribute names to account for when parsing SVG element (used by {@link Ellipse.fromElement})
-   * @static
-   * @memberOf Ellipse
    * @see http://www.w3.org/TR/SVG/shapes.html#EllipseElement
    */
 
   /**
    * Returns {@link Ellipse} instance from an SVG element
-   * @static
-   * @memberOf Ellipse
    * @param {HTMLElement} element Element to parse
    * @return {Ellipse}
    */
@@ -18068,12 +17922,10 @@ class Ellipse extends FabricObject {
 /**
  * Horizontal radius
  * @type Number
- * @default
  */
 /**
  * Vertical radius
  * @type Number
- * @default
  */
 _defineProperty(Ellipse, "type", 'Ellipse');
 _defineProperty(Ellipse, "cacheProperties", [...cacheProperties, ...ELLIPSE_PROPS]);
@@ -18085,7 +17937,6 @@ classRegistry.setSVGClass(Ellipse);
 /**
  * Parses "points" attribute, returning an array of values
  * @static
- * @memberOf fabric
  * @param {String} points points attribute string
  * @return {Array} array of points
  */
@@ -18395,15 +18246,11 @@ class Polyline extends FabricObject {
 
   /**
    * List of attribute names to account for when parsing SVG element (used by {@link Polyline.fromElement})
-   * @static
-   * @memberOf Polyline
    * @see: http://www.w3.org/TR/SVG/shapes.html#PolylineElement
    */
 
   /**
    * Returns Polyline instance from an SVG element
-   * @static
-   * @memberOf Polyline
    * @param {HTMLElement} element Element to parser
    * @param {Object} [options] Options object
    */
@@ -18426,8 +18273,6 @@ class Polyline extends FabricObject {
 
   /**
    * Returns Polyline instance from an object representation
-   * @static
-   * @memberOf Polyline
    * @param {Object} object Object to create an instance from
    * @returns {Promise<Polyline>}
    */
@@ -18440,7 +18285,6 @@ class Polyline extends FabricObject {
 /**
  * Points array
  * @type Array
- * @default
  */
 /**
  * WARNING: Feature in progress
@@ -20174,8 +20018,6 @@ class FabricText extends StyledText {
 
   /**
    * Returns FabricText instance from an SVG element (<b>not yet implemented</b>)
-   * @static
-   * @memberOf Text
    * @param {HTMLElement} element Element to parse
    * @param {Object} [options] Options object
    */
@@ -20264,8 +20106,6 @@ _defineProperty(FabricText, "genericFonts", ['serif', 'sans-serif', 'monospace',
 /* _FROM_SVG_START_ */
 /**
  * List of attribute names to account for when parsing SVG element (used by {@link FabricText.fromElement})
- * @static
- * @memberOf Text
  * @see: http://www.w3.org/TR/SVG/text.html#TextElement
  */
 _defineProperty(FabricText, "ATTRIBUTE_NAMES", SHARED_ATTRIBUTES.concat('x', 'y', 'dx', 'dy', 'font-family', 'font-style', 'font-weight', 'font-size', 'letter-spacing', 'text-decoration', 'text-anchor'));
@@ -21552,7 +21392,6 @@ class ITextKeyBehavior extends ITextBehavior {
    * Useful to reduce laggish redraw of the full document.body tree and
    * also with modals event capturing that won't let the textarea take focus.
    * @type HTMLElement
-   * @default
    */
 
   /**
@@ -22970,37 +22809,30 @@ class IText extends ITextClickBehavior {
 /**
  * Index where text selection starts (or where cursor is when there is no selection)
  * @type Number
- * @default
  */
 /**
  * Index where text selection ends
  * @type Number
- * @default
  */
 /**
  * Color of text selection
  * @type String
- * @default
  */
 /**
  * Indicates whether text is in editing mode
  * @type Boolean
- * @default
  */
 /**
  * Indicates whether a text can be edited
  * @type Boolean
- * @default
  */
 /**
  * Border color of text object while it's in editing mode
  * @type String
- * @default
  */
 /**
  * Width of cursor (in px)
  * @type Number
- * @default
  */
 /**
  * Color of text cursor color in editing mode.
@@ -23008,22 +22840,18 @@ class IText extends ITextClickBehavior {
  * if set to a color value that fabric can understand, it will
  * be used instead of the color of the text at the current position.
  * @type String
- * @default
  */
 /**
  * Delay between cursor blink (in ms)
  * @type Number
- * @default
  */
 /**
  * Duration of cursor fade in (in ms)
  * @type Number
- * @default
  */
 /**
  * Indicates whether internal text char widths can be cached
  * @type Boolean
- * @default
  */
 _defineProperty(IText, "ownDefaults", iTextDefaultValues);
 _defineProperty(IText, "type", 'IText');
@@ -23504,14 +23332,12 @@ class Textbox extends IText {
 /**
  * Minimum width of textbox, in pixels.
  * @type Number
- * @default
  */
 /**
  * Minimum calculated width of a textbox, in pixels.
  * fixed to 2 so that an empty textbox cannot go to 0
  * and is still selectable without text.
  * @type Number
- * @default
  */
 /**
  * Use this boolean property in order to split strings that have no white space concept.
@@ -24843,13 +24669,11 @@ class FabricImage extends FabricObject {
 
   /**
    * List of attribute names to account for when parsing SVG element (used by {@link FabricImage.fromElement})
-   * @static
    * @see {@link http://www.w3.org/TR/SVG/struct.html#ImageElement}
    */
 
   /**
    * Creates an instance of FabricImage from its object representation
-   * @static
    * @param {Object} object Object to create an instance from
    * @param {object} [options] Options object
    * @param {AbortSignal} [options.signal] handle aborting, see https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal
@@ -24884,7 +24708,6 @@ class FabricImage extends FabricObject {
 
   /**
    * Creates an instance of Image from an URL string
-   * @static
    * @param {String} url URL to create an image from
    * @param {LoadImageOptions} [options] Options object
    * @returns {Promise<FabricImage>}
@@ -24903,7 +24726,6 @@ class FabricImage extends FabricObject {
 
   /**
    * Returns {@link FabricImage} instance from an SVG element
-   * @static
    * @param {HTMLElement} element Element to parse
    * @param {Object} [options] Options object
    * @param {AbortSignal} [options.signal] handle aborting, see https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal
@@ -25399,7 +25221,6 @@ const createEmptyResponse = () => ({
  * Parses an SVG document, converts it to an array of corresponding fabric.* instances and passes them to a callback
  * @static
  * @function
- * @memberOf fabric
  * @param {HTMLElement} doc SVG document to parse
  * @param {TSvgParsedCallback} callback Invoked when the parsing is done, with null if parsing wasn't possible with the list of svg nodes.
  * @param {TSvgReviverCallback} [reviver] Extra callback for further parsing of SVG elements, called after each fabric object has been created.
@@ -25461,7 +25282,6 @@ async function parseSVGDocument(doc, reviver) {
 
 /**
  * Takes string corresponding to an SVG document, and parses it into a set of fabric objects
- * @memberOf fabric
  * @param {String} string representing the svg
  * @param {TSvgParsedCallback} callback Invoked when the parsing is done, with null if parsing wasn't possible with the list of svg nodes.
  * {@link TSvgParsedCallback} also receives `allElements` array as the last argument. This is the full list of svg nodes available in the document.
@@ -25482,8 +25302,7 @@ function loadSVGFromString(string, reviver, options) {
 
 /**
  * Takes url corresponding to an SVG document, and parses it into a set of fabric objects.
- * Note that SVG is fetched via XMLHttpRequest, so it needs to conform to SOP (Same Origin Policy)
- * @memberOf fabric
+ * Note that SVG is fetched via fetch API, so it needs to conform to SOP (Same Origin Policy)
  * @param {string} url where the SVG is
  * @param {TSvgParsedCallback} callback Invoked when the parsing is done, with null if parsing wasn't possible with the list of svg nodes.
  * {@link TSvgParsedCallback} also receives `allElements` array as the last argument. This is the full list of svg nodes available in the document.
@@ -25497,20 +25316,16 @@ function loadSVGFromString(string, reviver, options) {
  */
 function loadSVGFromURL(url, reviver) {
   let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  // need to handle error properly
-  return new Promise((resolve, reject) => {
-    const onComplete = r => {
-      const xml = r.responseXML;
-      if (xml) {
-        resolve(xml);
-      }
-      reject();
-    };
-    request(url.replace(/^\n\s*/, '').trim(), {
-      onComplete,
-      signal: options.signal
-    });
-  }).then(parsedDoc => parseSVGDocument(parsedDoc, reviver, options)).catch(() => {
+  return fetch(url.replace(/^\n\s*/, '').trim(), {
+    signal: options.signal
+  }).then(response => {
+    if (!response.ok) {
+      throw new FabricError(`HTTP error! status: ${response.status}`);
+    }
+    return response.text();
+  }).then(svgText => {
+    return loadSVGFromString(svgText, reviver, options);
+  }).catch(() => {
     // this is an unhappy path, we dont care about speed
     return createEmptyResponse();
   });
@@ -25996,8 +25811,6 @@ const regex = new RegExp(highPsourceCode, 'g');
 class BaseFilter {
   /**
    * Filter type
-   * @param {String} type
-   * @default
    */
   get type() {
     return this.constructor.type;
@@ -26492,18 +26305,15 @@ class BlendColor extends BaseFilter {
  * Color to make the blend operation with. default to a reddish color since black or white
  * gives always strong result.
  * @type String
- * @default
  **/
 /**
  * Blend mode for the filter: one of multiply, add, difference, screen, subtract,
  * darken, lighten, overlay, exclusion, tint.
  * @type String
- * @default
  **/
 /**
  * alpha value. represent the strength of the blend color operation.
  * @type Number
- * @default
  **/
 _defineProperty(BlendColor, "defaults", blendColorDefaultValues);
 _defineProperty(BlendColor, "type", 'BlendColor');
@@ -26691,7 +26501,6 @@ class BlendImage extends BaseFilter {
 
   /**
    * Create filter instance from an object representation
-   * @static
    * @param {object} object Object to create an instance from
    * @param {object} [options]
    * @param {AbortSignal} [options.signal] handle aborting image loading, see https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal
@@ -26719,7 +26528,6 @@ class BlendImage extends BaseFilter {
  * alpha channel of the filter image, and apply those values to the base
  * image's alpha channel.
  * @type String
- * @default
  **/
 /**
  * alpha value. represent the strength of the blend image operation.
@@ -26941,7 +26749,6 @@ class Blur extends BaseFilter {
  * specific to keep the image blur constant at different resolutions
  * range between 0 and 1.
  * @type Number
- * @default
  */
 _defineProperty(Blur, "type", 'Blur');
 _defineProperty(Blur, "defaults", blurDefaultValues);
@@ -27016,7 +26823,6 @@ class Brightness extends BaseFilter {
  * translated to -255 to 255 for 2d
  * 0.0039215686 is the part of 1 that get translated to 1 in 2d
  * @param {Number} brightness
- * @default
  */
 _defineProperty(Brightness, "type", 'Brightness');
 _defineProperty(Brightness, "defaults", brightnessDefaultValues);
@@ -27116,7 +26922,6 @@ class ColorMatrix extends BaseFilter {
  * outside the -1, 1 range.
  * 0.0039215686 is the part of 1 that get translated to 1 in 2d
  * @param {Array} matrix array of 20 numbers.
- * @default
  */
 /**
  * Lock the colormatrix on the color part, skipping alpha, mainly for non webgl scenario
@@ -27194,7 +26999,6 @@ class Composed extends BaseFilter {
 
   /**
    * Deserialize a JSON definition of a ComposedFilter into a concrete instance.
-   * @static
    * @param {oject} object Object to create an instance from
    * @param {object} [options]
    * @param {AbortSignal} [options.signal] handle aborting `BlendImage` filter loading, see https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal
@@ -27692,7 +27496,6 @@ class Gamma extends BaseFilter {
 /**
  * Gamma array value, from 0.01 to 2.2.
  * @param {Array} gamma
- * @default
  */
 _defineProperty(Gamma, "type", GAMMA);
 _defineProperty(Gamma, "defaults", gammaDefaultValues);
@@ -27934,12 +27737,10 @@ class Invert extends BaseFilter {
 /**
  * Invert also alpha.
  * @param {Boolean} alpha
- * @default
  **/
 /**
  * Filter invert. if false, does nothing
  * @param {Boolean} invert
- * @default
  */
 _defineProperty(Invert, "type", 'Invert');
 _defineProperty(Invert, "defaults", invertDefaultValues);
@@ -28020,7 +27821,6 @@ class Noise extends BaseFilter {
 /**
  * Noise value, from
  * @param {Number} noise
- * @default
  */
 _defineProperty(Noise, "type", 'Noise');
 _defineProperty(Noise, "defaults", noiseDefaultValues);
@@ -28196,8 +27996,6 @@ class RemoveColor extends BaseFilter {
 }
 /**
  * Color to remove, in any format understood by {@link Color}.
- * @param {String} type
- * @default
  */
 /**
  * distance to actual color, as value up or down from each r,g,b
@@ -28630,22 +28428,18 @@ class Resize extends BaseFilter {
  * Resize type
  * for webgl resizeType is just lanczos, for canvas2d can be:
  * bilinear, hermite, sliceHack, lanczos.
- * @default
  */
 /**
  * Scale factor for resizing, x axis
  * @param {Number} scaleX
- * @default
  */
 /**
  * Scale factor for resizing, y axis
  * @param {Number} scaleY
- * @default
  */
 /**
  * LanczosLobes parameter for lanczos filter, valid for resizeType lanczos
  * @param {Number} lanczosLobes
- * @default
  */
 _defineProperty(Resize, "type", 'Resize');
 _defineProperty(Resize, "defaults", resizeDefaultValues);
@@ -28729,7 +28523,6 @@ class Saturation extends BaseFilter {
  * A value of 0 has no effect.
  *
  * @param {Number} saturation
- * @default
  */
 _defineProperty(Saturation, "type", 'Saturation');
 _defineProperty(Saturation, "defaults", saturationDefaultValues);
@@ -28816,7 +28609,6 @@ class Vibrance extends BaseFilter {
  * A value of 0 has no effect.
  *
  * @param {Number} vibrance
- * @default
  */
 _defineProperty(Vibrance, "type", 'Vibrance');
 _defineProperty(Vibrance, "defaults", vibranceDefaultValues);
